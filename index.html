@@ -1,9 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <title>hello world</title>
+  <title>hello world</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#stdin {
+  width: 100%;
+}
+#stdout {
+  width: 100%;
+  flex: 1;
+}
+</style>
 </head>
+
 <body>
-        <h1>hello world</h1>
+  <textarea id="stdout" readonly></textarea>
+  <hr />
+  <input id="stdin" type="text" />
+
+  <script src="app.js"></script>
 </body>
 </html>

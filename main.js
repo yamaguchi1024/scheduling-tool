@@ -13,7 +13,11 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-        mainWindow = new BrowserWindow({});
+        mainWindow = new BrowserWindow({
+          webPreferences: {
+            nodeIntegration: true,
+          },
+        });
 
         // file://dirname/index.html
         mainWindow.loadURL(url.format({
