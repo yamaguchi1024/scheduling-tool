@@ -1,36 +1,79 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Halide scheduling tool</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
+    <head>
+        <title>Halide scheduling tool</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+        <style>
+html, body {width: 100%;height: 100%;}
+.cell {border: 1px solid;
+    box-sizing: border-box;
+    overflow-y: scroll;
 }
-html {
-  height: 100%;
+.row-flex {display: flex;flex-direction: row;}
+.col-flex {display: flex;flex-direction: column;}
+h2 {
+    border: 1px solid #ccc;
+    color: #00008B;
+    text-align: center;
+    text-decoration: underline;
+    text-decoration-color: green;
 }
-body {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+        </style>
+    </head>
 
-#stdin {
-  width: 100%;
-}
-#stdout {
-  width: 100%;
-  flex: 1;
-}
-</style>
-</head>
+    <body>
+        <div class="row-flex" style="width:100%; height:100%;">
+            <div class="col-flex" style="width:60%; height:100%;">
+                <div class="cell" style="width:100%; height:20%;">
+                    <h2>DAG Structure</h2>
 
-<body>
-  <textarea id="stdout" readonly></textarea>
-  <hr />
-  <input id="stdin" type="text" />
+                    Input -&gt; <mark>f</mark> -&gt; g -&gt; h -&gt; Output
 
-  <script src="app.js"></script>
-</body>
+                </div>
+                <div class="cell" style="width:100%; height:80%;">
+                    <h2>Schedule</h2>
+
+                    0 realize: h<br>
+                    1 h 5 25 (0, 0) t p<br>
+                    2 &nbsp;h 25 40 (0, 0) t<br>
+                    3 &nbsp;&nbsp;realize: g<br>
+                    4 &nbsp;&nbsp;g 125 991 (0, 0) t<br>
+                    5 &nbsp;&nbsp;&nbsp; g 8v 1 (0, 0) *<br>
+                    6 &nbsp;&nbsp;h 8v 1 (0, 0) *<br>
+                </div>
+            </div>
+
+            <div class="col-flex" style="width:40%; height:100%;">
+                <div class="cell" style="width:100%; height:50%;">
+                    <h2>Algorithm</h2>
+
+                    &nbsp;Var x("x"), y("y"); <br>
+                    &nbsp;Func f("f"), g("g"), h("h"); <br>
+                    <br>
+                    &nbsp;f(x, y) = (x + y) * (x + 2*y) * (x + 3*y) * (x + 4*y) * (x + 5*y); <br>
+                    &nbsp;Expr e = 0; <br>
+                    &nbsp;for (int i = 0; i &lt; 100; i++) { <br>
+                    &nbsp;&nbsp;&nbsp;    e += f(x + i*10, y + i*10); <br>
+                    &nbsp;} <br>
+                    &nbsp;g(x, y) = e; <br>
+                    &nbsp;e = 0; <br>
+                    &nbsp;for (int i = 0; i &lt; 100; i++) { <br>
+                    &nbsp;&nbsp;&nbsp;    e += g(x + i*10, y + i*10); <br>
+                    &nbsp;} <br>
+                    <br>
+                    &nbsp;h(x, y) = e; <br>
+                    &nbsp;h.estimate(x, 0, 1000).estimate(y, 0, 1000); <br>
+                    &nbsp;Pipeline(h).auto_schedule(target, params); <br>
+                </div>
+                <div class="cell" style="width:100%; height:50%;">
+                    <h2>User Input</h2>
+                    <div style= "width:100%; height:10%;">
+                        Choose the granularity of <mark>Func f</mark> (0 - 6)
+                    </div>
+                    <textarea style="width:100%; height:80%;"></textarea>
+                </div>
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
 </html>
