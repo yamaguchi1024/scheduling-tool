@@ -12,7 +12,7 @@ const ls = spawn('/home/yuka/Halide/apps/autoscheduler/test',
 
 const fs = require('fs');
 fs.readFile("/home/yuka/Halide/apps/autoscheduler/test.cpp", 'utf-8', (err, data) => {
-        document.getElementById("algorithm").innerText += data;
+        document.getElementById("algorithm").value += data;
     });
 
 ls.on('error', console.log);
