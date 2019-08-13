@@ -33,48 +33,21 @@ img {
                 </div>
                 <div class="cell" style="width:100%; height:80%;">
                     <h2>Schedule</h2>
-                    0 produce h:<br>
-                    1 parallel yo:<br>
-                    &nbsp;&nbsp;&nbsp;for yo in [0, 5]<br>
-                    2 &nbsp;&nbsp;for xo in [0, 25]<br>
-                    3 &nbsp;&nbsp;&nbsp;&nbsp;for yi in [0, 25]<br>
-                    4 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for xi in [0, 40]<br>
-                    5 &nbsp;&nbsp;&nbsp;&nbsp;produce g:<br>
-                    6 &nbsp;&nbsp;&nbsp;&nbsp;for g.yo in [0, 125]<br>
-                    7 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for g.xo in [0, 991]<br>
-                    8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vectorized g.xi in [0,8]<br>
-                    9 &nbsp;&nbsp;&nbsp;&nbsp;vectorized h.xii in [0,8]<br>
+                    <textarea id="schedule" style="width:100%; height:90%;"></textarea>
                 </div>
             </div>
 
             <div class="col-flex" style="width:40%; height:100%;">
                 <div class="cell" style="width:100%; height:50%;">
                     <h2>Algorithm</h2>
-
-                    &nbsp;Var x("x"), y("y"); <br>
-                    &nbsp;Func f("f"), g("g"), h("h"); <br>
-                    <br>
-                    &nbsp;f(x, y) = (x + y) * (x + 2*y) * (x + 3*y) * (x + 4*y) * (x + 5*y); <br>
-                    &nbsp;Expr e = 0; <br>
-                    &nbsp;for (int i = 0; i &lt; 100; i++) { <br>
-                    &nbsp;&nbsp;&nbsp;    e += f(x + i*10, y + i*10); <br>
-                    &nbsp;} <br>
-                    &nbsp;g(x, y) = e; <br>
-                    &nbsp;e = 0; <br>
-                    &nbsp;for (int i = 0; i &lt; 100; i++) { <br>
-                    &nbsp;&nbsp;&nbsp;    e += g(x + i*10, y + i*10); <br>
-                    &nbsp;} <br>
-                    <br>
-                    &nbsp;h(x, y) = e; <br>
-                    &nbsp;h.estimate(x, 0, 1000).estimate(y, 0, 1000); <br>
-                    &nbsp;Pipeline(h).auto_schedule(target, params); <br>
+                    <div id="algorithm"></div>
                 </div>
                 <div class="cell" style="width:100%; height:50%;">
                     <h2>User Input</h2>
                     <div style= "width:100%; height:10%;">
                         Choose the compute_at location of <mark>Func f</mark> (0 - 6)
                     </div>
-                    <textarea style="width:100%; height:80%;"></textarea>
+                    <textarea style="width:100%; height:80%;" id="input"></textarea>
                 </div>
             </div>
         </div>
