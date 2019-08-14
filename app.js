@@ -10,8 +10,19 @@ const ls = spawn('/home/yuka/Halide/apps/autoscheduler/test',
         },
     });
 
+let filename = "/home/yuka/Halide/apps/autoscheduler/test.cpp";
+/*
+const command = "cd /home/yuka/Halide/apps/autoscheduler; g++ " + filename + " -I bin/host -I ~/Halide/distrib/include -L ~/Halide/distrib/lib -I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o neko1";
+const exec = require("child_process").exec;
+const compile = exec(command,
+  function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+  });
+*/
+
 const fs = require('fs');
-fs.readFile("/home/yuka/Halide/apps/autoscheduler/test.cpp", 'utf-8', (err, data) => {
+fs.readFile(filename, 'utf-8', (err, data) => {
     document.getElementById("algorithm").value += data;
 });
 
