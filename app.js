@@ -19,13 +19,13 @@ ls.on('error', console.log);
 
 ls.stdout.on('data', (data) => {
   const e = document.getElementById("schedule");
-  e.value += data;
+  e.value = data;
   e.scrollTop = e.scrollHeight;
 });
 
 ls.stderr.on('data', (data) => {
   const e = document.getElementById("schedule");
-  e.value += data;
+  e.value = data;
   e.scrollTop = e.scrollHeight;
 });
 
