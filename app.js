@@ -31,50 +31,63 @@ ls.on('error', console.log);
 const vis = require('vis');
 ls.stdout.on('data', (data) => {
     const e = document.getElementById("schedule");
-    const json = JSON.parse(data);
-    if (json.type == "dag") {
-        let node_attrs = new Array();
-        for (let i = 0; i < json.nodes.length; i++) {
-            node_attrs[i] = {
-                id: i+1,
-                label: json.nodes[i]
-            };
-        }
-        let edge_attrs = new Array();
-        for (let i = 0; i < json.edges.length; i++) {
-            console.log(node_attrs.find(v => v.label === json.edges[i][0]));
-            console.log(node_attrs.find(v => v.label === json.edges[i][1]));
-            edge_attrs[i] = {
-                from: node_attrs.find(v => v.label === json.edges[i][0]).id,
-                to: node_attrs.find(v => v.label === json.edges[i][1]).id,
-                arrows: {
-                    to: {
-                        enabled: true
+    const iarray = data.toString().split(/\n/);
+    for (let element of iarray) {
+        if (!element.includes("type"))
+            continue;
+        const json = JSON.parse(element);
+        if (json.type == "dag") {
+            let node_attrs = new Array();
+            for (let i = 0; i < json.nodes.length; i++) {
+                node_attrs[i] = {
+                    id: i+1,
+                    label: json.nodes[i]
+                };
+            }
+            let edge_attrs = new Array();
+            for (let i = 0; i < json.edges.length; i++) {
+                edge_attrs[i] = {
+                    from: node_attrs.find(v => v.label === json.edges[i][0]).id,
+                    to: node_attrs.find(v => v.label === json.edges[i][1]).id,
+                    arrows: {
+                        to: {
+                            enabled: true
+                        }
                     }
                 }
             }
-        }
 
-        let nodes = new vis.DataSet(node_attrs);
-        let edges = new vis.DataSet(edge_attrs);
+            let nodes = new vis.DataSet(node_attrs);
+            let edges = new vis.DataSet(edge_attrs);
             let container = document.getElementById('dag');
             let data = {
-            nodes: nodes,
-            edges: edges
-        };
+                nodes: nodes,
+                edges: edges
+            };
 
-        let options = {};
-        let network = new vis.Network(container, data, options);
+            let options = {};
+            let network = new vis.Network(container, data, options);
+        }
+        else if (json.type == "phase1" || json.type == "phase0")
+        {
+            const e = document.getElementById("user");
+            e.value = json.contents;
+
+        } else if (json.type == "schedule") 
+        {
+            const e = document.getElementById("schedule");
+            e.value = json.contents;
+            e.scrollTop = e.scrollHeight;
+        }
     }
-
-    e.value = data;
-    e.scrollTop = e.scrollHeight;
+    //e.value = data;
 });
 
 ls.stderr.on('data', (data) => {
     const e = document.getElementById("schedule");
-    e.value = data;
+    e.value += data;
     e.scrollTop = e.scrollHeight;
+    console.log(data.toString());
 });
 
 document.getElementById("input").addEventListener('keypress', (e) => {
