@@ -46,7 +46,11 @@ ls.stdout.on('data', (data) => {
             console.log(node_attrs.find(v => v.label === json.edges[i][1]));
             edge_attrs[i] = {
                 from: node_attrs.find(v => v.label === json.edges[i][0]).id,
-                to: node_attrs.find(v => v.label === json.edges[i][1]).id, arrows: {
+                to: node_attrs.find(v => v.label === json.edges[i][1]).id,
+                arrows: {
+                    to: {
+                        enabled: true
+                    }
                 }
             }
         }
