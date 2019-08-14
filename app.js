@@ -19,7 +19,7 @@ const compile = exec(command,
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
   });
-*/
+  */
 
 const fs = require('fs');
 fs.readFile(filename, 'utf-8', (err, data) => {
@@ -28,8 +28,41 @@ fs.readFile(filename, 'utf-8', (err, data) => {
 
 ls.on('error', console.log);
 
+const vis = require('vis');
 ls.stdout.on('data', (data) => {
     const e = document.getElementById("schedule");
+    const json = JSON.parse(data);
+    if (json.type == "dag") {
+        let node_attrs = new Array();
+        for (let i = 0; i < json.nodes.length; i++) {
+            node_attrs[i] = {
+                id: i+1,
+                label: json.nodes[i]
+            };
+        }
+        let edge_attrs = new Array();
+        for (let i = 0; i < json.edges.length; i++) {
+            console.log(node_attrs.find(v => v.label === json.edges[i][0]));
+            console.log(node_attrs.find(v => v.label === json.edges[i][1]));
+            edge_attrs[i] = {
+                from: node_attrs.find(v => v.label === json.edges[i][0]).id,
+                to: node_attrs.find(v => v.label === json.edges[i][1]).id, arrows: {
+                }
+            }
+        }
+
+        let nodes = new vis.DataSet(node_attrs);
+        let edges = new vis.DataSet(edge_attrs);
+            let container = document.getElementById('dag');
+            let data = {
+            nodes: nodes,
+            edges: edges
+        };
+
+        let options = {};
+        let network = new vis.Network(container, data, options);
+    }
+
     e.value = data;
     e.scrollTop = e.scrollHeight;
 });
