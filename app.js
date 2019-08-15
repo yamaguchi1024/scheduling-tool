@@ -21,11 +21,12 @@ const compile = exec(command,
   });
   */
 
+const hljs = require('highlight.js');
 const fs = require('fs');
 fs.readFile(filename, 'utf-8', (err, data) => {
-    document.getElementById("algorithm").value += data;
+    const res = hljs.highlight("gml", data);
+    document.getElementById("algorithm").innerHTML = res.value;
 });
-
 ls.on('error', console.log);
 
 const vis = require('vis');
