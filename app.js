@@ -74,7 +74,7 @@ ls.stdout.on('data', (data) => {
         else if (json.type == "phase1" || json.type == "phase0")
         {
             const e = document.getElementById("user");
-            e.value = json.contents;
+            e.innerHTML = json.contents;
             funcid = node_attrs.find(v => v.label === json.func).id;
 
         } else if (json.type == "schedule") 
