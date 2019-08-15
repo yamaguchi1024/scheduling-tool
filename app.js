@@ -11,6 +11,7 @@ const ls = spawn('/home/yuka/Halide/apps/autoscheduler/test',
     });
 
 let filename = "/home/yuka/Halide/apps/autoscheduler/test.cpp";
+// TO compile
 /*
 const command = "cd /home/yuka/Halide/apps/autoscheduler; g++ " + filename + " -I bin/host -I ~/Halide/distrib/include -L ~/Halide/distrib/lib -I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o neko1";
 const exec = require("child_process").exec;
@@ -84,19 +85,20 @@ ls.stdout.on('data', (data) => {
             const e = document.getElementById("schedule");
             const lines = json.contents;
             e.innerHTML = "";
-            let prefix = "";
             for (const idx in lines) {
                 const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
                 let newline = "";
+
+                const div = document.createElement("div");
+                div.style.backgroundColor = colors[idx];
                 for (const iidx in lines[idx]) {
-                    if (iidx == lines[idx].length - 1 || iidx == 0)
-                        prefix += "&nbsp;&nbsp;";
-                    let curline = prefix + "<span style=\"background-color: " + colors[idx] + "\">" + lines[idx][iidx] + "</span><br>";
+                    let curline = lines[idx][iidx] + "<br>";
                     if (iidx != 0)
                         curline = "&nbsp;&nbsp;&nbsp;" + curline;
                     newline += curline;
                 }
-                e.innerHTML += index + newline;
+                div.innerHTML += index + newline;
+                e.appendChild(div);
             }
             e.scrollTop = e.scrollHeight;
         }
