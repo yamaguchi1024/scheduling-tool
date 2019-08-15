@@ -71,7 +71,7 @@ ls.stdout.on('data', (data) => {
             let options = {};
             let network = new vis.Network(container, network_data, options);
         }
-        else if (json.type == "phase1" || json.type == "phase0")
+        else if (json.type == "phase1" || json.type == "phase0" || json.type == "meta")
         {
             const e = document.getElementById("user");
             e.innerHTML = json.contents;
