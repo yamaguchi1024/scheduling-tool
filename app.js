@@ -31,6 +31,7 @@ ls.on('error', console.log);
 const vis = require('vis');
 let node_attrs, edge_attrs;
 let nodes, edges;
+let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 ls.stdout.on('data', (data) => {
     const e = document.getElementById("schedule");
     const iarray = data.toString().split(/\n/);
@@ -80,7 +81,22 @@ ls.stdout.on('data', (data) => {
         } else if (json.type == "schedule") 
         {
             const e = document.getElementById("schedule");
-            e.value = json.contents;
+            const lines = json.contents;
+            e.innerHTML = "";
+            let prefix = "";
+            for (const idx in lines) {
+                const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
+                let newline = "";
+                for (const iidx in lines[idx]) {
+                    if (iidx == lines[idx].length - 1 || iidx == 0)
+                        prefix += "&nbsp;&nbsp;";
+                    let curline = prefix + "<span style=\"background-color: " + colors[idx] + "\">" + lines[idx][iidx] + "</span><br>";
+                    if (iidx != 0)
+                        curline = "&nbsp;&nbsp;&nbsp;" + curline;
+                    newline += curline;
+                }
+                e.innerHTML += index + newline;
+            }
             e.scrollTop = e.scrollHeight;
         }
     }
@@ -99,7 +115,7 @@ ls.stdout.on('data', (data) => {
 
 ls.stderr.on('data', (data) => {
     const e = document.getElementById("schedule");
-    e.value += data;
+    e.innerHTML += data;
     e.scrollTop = e.scrollHeight;
     console.log(data.toString());
 });
