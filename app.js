@@ -42,6 +42,7 @@ ls.stdout.on('data', (data) => {
         if (!element.includes("type"))
             continue;
         const json = JSON.parse(element);
+        console.log(json);
         if (json.type == "dag") {
             node_attrs = new Array();
             for (let i = 0; i < json.nodes.length; i++) {
@@ -78,7 +79,8 @@ ls.stdout.on('data', (data) => {
         {
             const e = document.getElementById("user");
             e.innerHTML = json.contents;
-            funcid = node_attrs.find(v => v.label === json.func).id;
+            if (json.type != "meta")
+                funcid = node_attrs.find(v => v.label === json.func).id;
 
         } else if (json.type == "schedule") 
         {
@@ -101,6 +103,9 @@ ls.stdout.on('data', (data) => {
                 e.appendChild(div);
             }
             e.scrollTop = e.scrollHeight;
+        } else if (json.type == "cost") {
+            const e = document.getElementById("cost");
+            e.innerHTML = json.contents;
         }
     }
 
@@ -120,7 +125,6 @@ ls.stderr.on('data', (data) => {
     const e = document.getElementById("schedule");
     e.innerHTML += data;
     e.scrollTop = e.scrollHeight;
-    console.log(data.toString());
 });
 
 document.getElementById("input").addEventListener('keypress', (e) => {
