@@ -29,22 +29,25 @@ fs.readFile(filename, 'utf-8', (err, data) => {
 ls.on('error', console.log);
 
 const vis = require('vis');
+let node_attrs, edge_attrs;
+let nodes, edges;
 ls.stdout.on('data', (data) => {
     const e = document.getElementById("schedule");
     const iarray = data.toString().split(/\n/);
+    let funcid;
     for (let element of iarray) {
         if (!element.includes("type"))
             continue;
         const json = JSON.parse(element);
         if (json.type == "dag") {
-            let node_attrs = new Array();
+            node_attrs = new Array();
             for (let i = 0; i < json.nodes.length; i++) {
                 node_attrs[i] = {
                     id: i+1,
                     label: json.nodes[i]
                 };
             }
-            let edge_attrs = new Array();
+            edge_attrs = new Array();
             for (let i = 0; i < json.edges.length; i++) {
                 edge_attrs[i] = {
                     from: node_attrs.find(v => v.label === json.edges[i][0]).id,
@@ -57,21 +60,22 @@ ls.stdout.on('data', (data) => {
                 }
             }
 
-            let nodes = new vis.DataSet(node_attrs);
-            let edges = new vis.DataSet(edge_attrs);
+            nodes = new vis.DataSet(node_attrs);
+            edges = new vis.DataSet(edge_attrs);
             let container = document.getElementById('dag');
-            let data = {
+            let network_data = {
                 nodes: nodes,
                 edges: edges
             };
 
             let options = {};
-            let network = new vis.Network(container, data, options);
+            let network = new vis.Network(container, network_data, options);
         }
         else if (json.type == "phase1" || json.type == "phase0")
         {
             const e = document.getElementById("user");
             e.value = json.contents;
+            funcid = node_attrs.find(v => v.label === json.func).id;
 
         } else if (json.type == "schedule") 
         {
@@ -80,7 +84,17 @@ ls.stdout.on('data', (data) => {
             e.scrollTop = e.scrollHeight;
         }
     }
-    //e.value = data;
+
+    // Change color here
+    for (let i = 0; i < nodes.length; i++) {
+        let n = nodes.get(i+1);
+        n.color = "cyan";
+        nodes.update(n);
+    }
+
+    let func = nodes.get(funcid);
+    func.color = "lime";
+    nodes.update(func);
 });
 
 ls.stderr.on('data', (data) => {
