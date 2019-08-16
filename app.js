@@ -106,6 +106,9 @@ ls.stdout.on('data', (data) => {
         } else if (json.type == "cost") {
             const e = document.getElementById("cost");
             e.innerHTML = json.contents;
+        } else if (json.type == "realize" ) {
+            const e = document.getElementById("cost");
+            e.innerHTML += ", " + json.contents + "ms";
         }
     }
 
