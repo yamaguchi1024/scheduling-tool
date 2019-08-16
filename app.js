@@ -115,7 +115,7 @@ function execTest() {
                     let newline = "";
 
                     const div = document.createElement("div");
-                    div.style.backgroundColor = colors[idx];
+                    div.style.backgroundColor = colors[idx%(colors.length)];
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx] + "<br>";
                         if (iidx != 0)
