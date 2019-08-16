@@ -42,7 +42,6 @@ ls.stdout.on('data', (data) => {
         if (!element.includes("type"))
             continue;
         const json = JSON.parse(element);
-        console.log(json);
         if (json.type == "dag") {
             node_attrs = new Array();
             for (let i = 0; i < json.nodes.length; i++) {
@@ -136,6 +135,5 @@ document.getElementById("input").addEventListener('keypress', (e) => {
 
     const input = e.target.value;
     e.target.value = '';
-    console.log(`write ${input}`);
     ls.stdin.write(input + "\n");
 });
