@@ -12,7 +12,7 @@ const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-let filename = "/home/yuka/Halide/apps/autoscheduler/test/simple_test.cpp";
+let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
 
 // Let user choose file if necessary.
 let curmenu = Menu.getApplicationMenu();
@@ -23,7 +23,7 @@ curmenu.append(new MenuItem({ label: 'Open File', click() {
     filename = dialog.showOpenDialog({ properties: ['openFile'],  filters: [
         { name: 'Code', extensions: ['cpp', 'cxx'] }], })[0];
     const command =
-        "cd /home/yuka/Halide/apps/autoscheduler; g++ "
+        "cd /home/yuka/Halide/apps/scheduling-tool; g++ "
         + filename + " -I bin/host -I ~/Halide/distrib/include -L ~/Halide/distrib/lib "
         + "-I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o "
         + path.parse(filename).name;
@@ -48,11 +48,11 @@ function execTest() {
     let nodes, edges;
     let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 
-    const executable = "/home/yuka/Halide/apps/autoscheduler/" + path.parse(filename).name;
+    const executable = "/home/yuka/Halide/apps/scheduling-tool/" + path.parse(filename).name;
     const binary = spawn(executable,
         {
             env: {
-                'LD_LIBRARY_PATH':'/home/yuka/Halide/apps/autoscheduler/bin/',
+                'LD_LIBRARY_PATH':'/home/yuka/Halide/apps/scheduling-tool/bin/',
                 'HL_CYOS':'1',
             },
         });
