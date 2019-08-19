@@ -23,10 +23,13 @@ curmenu.append(new MenuItem({ label: 'Open File', click() {
     filename = dialog.showOpenDialog({ properties: ['openFile'],  filters: [
         { name: 'Code', extensions: ['cpp', 'cxx'] }], })[0];
     const command =
-        "cd /home/yuka/Halide/apps/scheduling-tool; g++ "
-        + filename + " -I bin/host -I ~/Halide/distrib/include -L ~/Halide/distrib/lib "
-        + "-I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o bin/"
-        + path.parse(filename).name;
+        "cd /home/yuka/Halide/apps/scheduling-tool; "
+        + "g++ -O3 -std=c++11 -I /home/yuka/Halide/distrib/include/ -I /home/yuka/Halide/distrib/tools/ "
+        + "-Wno-unused-function -Wcast-qual -Wignored-qualifiers -Wno-comment -Wsign-compare "
+        + "-Wno-unknown-warning-option -Wno-psabi -rdynamic " + filename
+        + " /home/yuka/Halide/apps/scheduling-tool/bin/libscheduling_tool.so -o "
+        + " ./bin/" + path.parse(filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/bin/libHalide.so "
+        + "-lz -lrt -ldl -ltinfo -lpthread -lm -lxml2"
 
     const compile = exec(command,
         function (error, stdout, stderr) {
