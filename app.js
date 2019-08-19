@@ -25,7 +25,7 @@ curmenu.append(new MenuItem({ label: 'Open File', click() {
     const command =
         "cd /home/yuka/Halide/apps/scheduling-tool; g++ "
         + filename + " -I bin/host -I ~/Halide/distrib/include -L ~/Halide/distrib/lib "
-        + "-I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o "
+        + "-I /home/yuka/Halide/distrib/tools/ -lHalide -lpthread -ldl -lz -lrt -ltinfo -rdynamic -o bin/"
         + path.parse(filename).name;
 
     const compile = exec(command,
@@ -48,7 +48,7 @@ function execTest() {
     let nodes, edges;
     let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 
-    const executable = "/home/yuka/Halide/apps/scheduling-tool/" + path.parse(filename).name;
+    const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(filename).name;
     const binary = spawn(executable,
         {
             env: {
