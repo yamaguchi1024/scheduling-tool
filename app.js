@@ -31,8 +31,7 @@ function execTest() {
     const binary = spawn(executable,
         {
             env: {
-                'LD_LIBRARY_PATH':'/home/yuka/Halide/apps/scheduling-tool/bin/',
-                'HL_CYOS':'1',
+                'LD_LIBRARY_PATH':'/home/yuka/Halide/apps/scheduling-tool/bin/'
             },
         });
     binary.on('error', console.log);
