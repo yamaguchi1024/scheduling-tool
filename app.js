@@ -2,7 +2,6 @@
 
 const electron = require("electron");
 const { remote } = require('electron')
-const { Menu, MenuItem } = remote;
 const { spawn } = require("child_process");
 const { dialog } = require('electron').remote
 const hljs = require('highlight.js');
@@ -12,46 +11,15 @@ const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
-
-// Let user choose file if necessary.
-let curmenu = Menu.getApplicationMenu();
 let globalexec = execTest();
 setFeatures();
-
-curmenu.append(new MenuItem({ label: 'Open File', click() {
-    filename = dialog.showOpenDialog({ properties: ['openFile'],  filters: [
-        { name: 'Code', extensions: ['cpp', 'cxx'] }], })[0];
-    const command =
-        "cd /home/yuka/Halide/apps/scheduling-tool; "
-        + "g++ -O3 -std=c++11 -I /home/yuka/Halide/distrib/include/ -I /home/yuka/Halide/distrib/tools/ "
-        + "-Wno-unused-function -Wcast-qual -Wignored-qualifiers -Wno-comment -Wsign-compare "
-        + "-Wno-unknown-warning-option -Wno-psabi -rdynamic " + filename
-        + " /home/yuka/Halide/apps/scheduling-tool/bin/libscheduling_tool.so -o "
-        + " ./bin/" + path.parse(filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/bin/libHalide.so "
-        + "-lz -lrt -ldl -ltinfo -lpthread -lm -lxml2"
-
-    const compile = exec(command,
-        function (error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
-
-            globalexec.kill();
-            document.getElementById("input").addEventListener('keypress', inputListener, true);
-
-            globalexec = execTest();
-            setFeatures();
-        });
-}}));
-
-Menu.setApplicationMenu(curmenu);
 
 function execTest() {
     let node_attrs, edge_attrs;
     let nodes, edges;
     let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 
-    const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(filename).name;
+    const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(remote.getGlobal('filename')).name;
     const binary = spawn(executable,
         {
             env: {
@@ -171,7 +139,7 @@ function inputListener(e) {
 };
 
 function setFeatures() {
-    fs.readFile(filename, 'utf-8', (err, data) => {
+    fs.readFile(remote.getGlobal('filename'), 'utf-8', (err, data) => {
         const res = hljs.highlight("gml", data);
         document.getElementById("algorithm").innerHTML = res.value;
     });
