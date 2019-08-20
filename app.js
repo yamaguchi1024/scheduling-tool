@@ -120,7 +120,6 @@ function execTest() {
                             curline = "&nbsp;&nbsp;&nbsp;" + curline;
                         newline += curline;
                     }
-                    console.log(index, newline);
                     div.innerHTML += index + newline;
                     e.appendChild(div);
                     e.appendChild(document.createElement("br"));
