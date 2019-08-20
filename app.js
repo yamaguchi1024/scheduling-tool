@@ -76,12 +76,19 @@ function execTest() {
                 let options = {};
                 let network = new vis.Network(container, network_data, options);
             }
-            else if (json.type == "phase1" || json.type == "phase0" || json.type == "meta")
+            else if (json.type == "phase1" || json.type == "meta")
             {
                 const e = document.getElementById("user");
                 e.innerHTML = json.contents;
                 if (json.type != "meta")
                     funcid = node_attrs.find(v => v.label === json.func).id;
+
+            }else if (json.type == "phase0")
+            {
+                const e = document.getElementById("user");
+                e.innerHTML = json.contents;
+                document.getElementById("input").disabled = true;
+                funcid = node_attrs.find(v => v.label === json.func).id;
 
             } else if (json.type == "schedule") 
             {
@@ -94,7 +101,8 @@ function execTest() {
 
                     const div = document.createElement("button");
                     div.onclick = function() {
-                        console.log(idx);
+                        globalexec.stdin.write(idx + "\n");
+                        document.getElementById("input").disabled = false;
                     };
                     let prevcolor;
                     div.onmouseover = function() {
