@@ -92,7 +92,19 @@ function execTest() {
                     const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
                     let newline = "";
 
-                    const div = document.createElement("div");
+                    const div = document.createElement("button");
+                    div.onclick = function() {
+                        console.log(idx);
+                    };
+                    let prevcolor;
+                    div.onmouseover = function() {
+                        prevcolor = div.style.backgroundColor;
+                        div.style.backgroundColor = "#FFFFFF";
+                    };
+                    div.onmouseout = function() {
+                        div.style.backgroundColor = prevcolor;
+                    };
+                    div.setAttribute("style", "text-align: left");
                     div.style.backgroundColor = colors[idx%(colors.length)];
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx] + "<br>";
@@ -100,8 +112,10 @@ function execTest() {
                             curline = "&nbsp;&nbsp;&nbsp;" + curline;
                         newline += curline;
                     }
+                    console.log(index, newline);
                     div.innerHTML += index + newline;
                     e.appendChild(div);
+                    e.appendChild(document.createElement("br"));
                 }
                 e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
