@@ -1,8 +1,9 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const { Menu, MenuItem } = require('electron');
-
+const { Menu, MenuItem, dialog, ipcMain } = require('electron');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const {app, BrowserWindow} = electron;
 
 let mainWindow;
@@ -31,31 +32,23 @@ app.on('ready', function() {
         app.quit();
     });
 
-    global.filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
     let curmenu = Menu.getApplicationMenu();
     // Let user choose file if necessary.
     curmenu.append(new MenuItem({ label: 'Open File', click() {
-        global.filename = dialog.showOpenDialog({ properties: ['openFile'],  filters: [
+        let filename = dialog.showOpenDialog({ properties: ['openFile'],  filters: [
             { name: 'Code', extensions: ['cpp', 'cxx'] }], })[0];
         const command =
             "cd /home/yuka/Halide/apps/scheduling-tool; "
             + "g++ -O3 -std=c++11 -I /home/yuka/Halide/distrib/include/ -I /home/yuka/Halide/distrib/tools/ "
             + "-Wno-unused-function -Wcast-qual -Wignored-qualifiers -Wno-comment -Wsign-compare "
-            + "-Wno-unknown-warning-option -Wno-psabi -rdynamic " + global.filename
+            + "-Wno-unknown-warning-option -Wno-psabi -rdynamic " + filename
             + " /home/yuka/Halide/apps/scheduling-tool/bin/libscheduling_tool.so -o "
-            + " ./bin/" + path.parse(global.filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/bin/libHalide.so "
+            + " ./bin/" + path.parse(filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/bin/libHalide.so "
             + "-lz -lrt -ldl -ltinfo -lpthread -lm -lxml2"
 
         const compile = exec(command,
             function (error, stdout, stderr) {
-                console.log('stdout: ' + stdout);
-                console.log('stderr: ' + stderr);
-
-                globalexec.kill();
-                document.getElementById("input").addEventListener('keypress', inputListener, true);
-
-                globalexec = execTest();
-                setFeatures();
+                mainWindow.webContents.send('fileopen', filename);
             });
     }}));
 

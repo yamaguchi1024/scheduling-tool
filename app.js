@@ -1,15 +1,23 @@
 'use strict';
 
 const electron = require("electron");
-const { remote } = require('electron')
+const { remote, ipcRenderer } = require('electron')
 const { spawn } = require("child_process");
-const { dialog } = require('electron').remote
 const hljs = require('highlight.js');
 const fs = require('fs');
 const vis = require('vis');
 const path = require('path');
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+
+let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
+
+ipcRenderer.on('fileopen', (event, str) => {
+    filename = str;
+    globalexec.kill();
+    document.getElementById("input").addEventListener('keypress', inputListener, true);
+
+    globalexec = execTest();
+    setFeatures();
+});
 
 let globalexec = execTest();
 setFeatures();
@@ -19,7 +27,7 @@ function execTest() {
     let nodes, edges;
     let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 
-    const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(remote.getGlobal('filename')).name;
+    const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(filename).name;
     const binary = spawn(executable,
         {
             env: {
@@ -139,7 +147,7 @@ function inputListener(e) {
 };
 
 function setFeatures() {
-    fs.readFile(remote.getGlobal('filename'), 'utf-8', (err, data) => {
+    fs.readFile(filename, 'utf-8', (err, data) => {
         const res = hljs.highlight("gml", data);
         document.getElementById("algorithm").innerHTML = res.value;
     });
