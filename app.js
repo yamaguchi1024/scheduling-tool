@@ -80,15 +80,31 @@ function execTest() {
             {
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
+                inst.innerHTML += " or type tiling size (y x)";
 
                 const suggest = document.getElementById("suggestion");
-                const sarray = json.suggest.split(/\n/);
-                for (let i in sarray) {
-                    suggest.innerHTML += i.toString() + " " + sarray[i] + "<br>";
+                const costarray = json.cost.split(/\n/);
+                const tilingarray = json.tiling.split(/\n/);
+                for (let i in costarray) {
+                    const button = document.createElement("button");
+                    button.onclick = function() {
+                        globalexec.stdin.write("0 " + i + "\n");
+                    };
+                    button.onmouseover = function() {
+                        button.style.backgroundColor = "#FFDC00";
+                    };
+                    button.onmouseout = function() {
+                        button.style.backgroundColor = "#FFFFFF";
+                    };
+                    button.setAttribute("style", "text-align: left");
+                    let line = "(" + tilingarray[i] + ")" + " cost: " + costarray[i];
+                    button.innerHTML = line;
+                    button.style.backgroundColor = "#FFFFFF";
+                    suggest.appendChild(button);
+                    suggest.appendChild(document.createElement("div"));
                 }
                 
                 funcid = node_attrs.find(v => v.label === json.func).id;
-
             }
                 else if (json.type == "phase0")
             {
@@ -135,7 +151,7 @@ function execTest() {
                     let prevcolor;
                     button.onmouseover = function() {
                         prevcolor = button.style.backgroundColor;
-                        button.style.backgroundColor = "#FFFFFF";
+                        button.style.backgroundColor = "#FFDC00";
                     };
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
