@@ -90,7 +90,20 @@ function execTest() {
                 document.getElementById("input").disabled = true;
                 funcid = node_attrs.find(v => v.label === json.func).id;
 
-            } else if (json.type == "schedule") 
+            } else if (json.type == "line_cost") {
+                const e = document.getElementById("schedule");
+                const line_cost = json.costs;
+                const linenum = json.linenum;
+                const nodes = e.children;
+                for (let i in nodes) {
+                    if (i != linenum) continue;
+                    const stage = nodes[i];
+                    if (stage.children == undefined) continue;
+                    const cost_div = stage.children[1];
+                    cost_div.innerHTML += line_cost;
+                    cost_div.style.backgroundColor = "#FF4136";
+                }
+            }else if (json.type == "schedule")
             {
                 const e = document.getElementById("schedule");
                 const lines = json.contents;
@@ -99,30 +112,38 @@ function execTest() {
                     const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
                     let newline = "";
 
-                    const div = document.createElement("button");
-                    div.onclick = function() {
+                    const button = document.createElement("button");
+                    button.onclick = function() {
                         globalexec.stdin.write(idx + "\n");
                         document.getElementById("input").disabled = false;
                     };
                     let prevcolor;
-                    div.onmouseover = function() {
-                        prevcolor = div.style.backgroundColor;
-                        div.style.backgroundColor = "#FFFFFF";
+                    button.onmouseover = function() {
+                        prevcolor = button.style.backgroundColor;
+                        button.style.backgroundColor = "#FFFFFF";
                     };
-                    div.onmouseout = function() {
-                        div.style.backgroundColor = prevcolor;
+                    button.onmouseout = function() {
+                        button.style.backgroundColor = prevcolor;
                     };
-                    div.setAttribute("style", "text-align: left");
-                    div.style.backgroundColor = colors[idx%(colors.length)];
+                    button.setAttribute("style", "text-align: left");
+                    button.style.backgroundColor = colors[idx%(colors.length)];
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx] + "<br>";
                         if (iidx != 0)
                             curline = "&nbsp;&nbsp;&nbsp;" + curline;
                         newline += curline;
                     }
-                    div.innerHTML += index + newline;
+                    button.innerHTML += index + newline;
+
+                    const linecost = document.createElement("div");
+                    linecost.setAttribute("style", "text-align: right; float: right;");
+                    linecost.setAttribute("id", "linecost");
+
+                    const div = document.createElement("div");
+                    div.setAttribute("style", "padding: 0; margin: 0px;");
+                    div.appendChild(button);
+                    div.appendChild(linecost);
                     e.appendChild(div);
-                    e.appendChild(document.createElement("br"));
                 }
                 e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
