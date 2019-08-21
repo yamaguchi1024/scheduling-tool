@@ -83,6 +83,7 @@ function execTest() {
                 inst.innerHTML += " or type tiling size (y x)";
 
                 const suggest = document.getElementById("suggestion");
+                suggest.innerHTML = "";
                 const costarray = json.cost.split(/\n/);
                 const tilingarray = json.tiling.split(/\n/);
                 for (let i in costarray) {
@@ -97,11 +98,20 @@ function execTest() {
                         button.style.backgroundColor = "#FFFFFF";
                     };
                     button.setAttribute("style", "text-align: left");
-                    let line = "(" + tilingarray[i] + ")" + " cost: " + costarray[i];
+                    let line = "(" + tilingarray[i] + ")";
                     button.innerHTML = line;
                     button.style.backgroundColor = "#FFFFFF";
-                    suggest.appendChild(button);
-                    suggest.appendChild(document.createElement("div"));
+
+                    const cdiv = document.createElement("div");
+                    cdiv.setAttribute("style", "text-align: right; float: right;");
+                    cdiv.innerHTML =  " cost: " + costarray[i];
+                    cdiv.style.backgroundColor = "#FF4136";
+
+                    const div = document.createElement("div");
+                    div.setAttribute("style", "padding: 0; margin: 0px;");
+                    div.appendChild(button);
+                    div.appendChild(cdiv);
+                    suggest.appendChild(div);
                 }
                 
                 funcid = node_attrs.find(v => v.label === json.func).id;
@@ -113,6 +123,13 @@ function execTest() {
                 document.getElementById("input").disabled = true;
                 funcid = node_attrs.find(v => v.label === json.func).id;
 
+                // Hide phase 1 items here
+                const suggest = document.getElementById("suggestion");
+                const nodes = suggest.children;
+                for (let n of nodes) {
+                    n.children[0].disabled = true;
+                    n.removeChild(n.children[1]);
+                }
             }
                 else if (json.type == "meta")
             {
@@ -131,7 +148,7 @@ function execTest() {
                     const stage = nodes[i];
                     if (stage.children == undefined) continue;
                     const cost_div = stage.children[1];
-                    cost_div.innerHTML += line_cost;
+                    cost_div.innerHTML += "cost: " + line_cost;
                     cost_div.style.backgroundColor = "#FF4136";
                 }
             }else if (json.type == "schedule")
