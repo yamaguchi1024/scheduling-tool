@@ -76,21 +76,36 @@ function execTest() {
                 let options = {};
                 let network = new vis.Network(container, network_data, options);
             }
-            else if (json.type == "phase1" || json.type == "meta")
+                else if (json.type == "phase1")
             {
-                const e = document.getElementById("user");
-                e.innerHTML = json.contents;
-                if (json.type != "meta")
-                    funcid = node_attrs.find(v => v.label === json.func).id;
+                const inst = document.getElementById("instruction");
+                inst.innerHTML = json.instruction;
 
-            }else if (json.type == "phase0")
+                const suggest = document.getElementById("suggestion");
+                const sarray = json.suggest.split(/\n/);
+                for (let i in sarray) {
+                    suggest.innerHTML += i.toString() + " " + sarray[i] + "<br>";
+                }
+                
+                funcid = node_attrs.find(v => v.label === json.func).id;
+
+            }
+                else if (json.type == "phase0")
             {
-                const e = document.getElementById("user");
+                const e = document.getElementById("instruction");
                 e.innerHTML = json.contents;
                 document.getElementById("input").disabled = true;
                 funcid = node_attrs.find(v => v.label === json.func).id;
 
-            } else if (json.type == "line_cost") {
+            }
+                else if (json.type == "meta")
+            {
+                const e = document.getElementById("instruction");
+                e.innerHTML = json.contents;
+
+            }
+                else if (json.type == "line_cost")
+            {
                 const e = document.getElementById("schedule");
                 const line_cost = json.costs;
                 const linenum = json.linenum;
