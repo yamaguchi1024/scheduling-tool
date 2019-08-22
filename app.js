@@ -128,6 +128,7 @@ function execTest() {
                 const nodes = suggest.children;
                 for (let n of nodes) {
                     n.children[0].disabled = true;
+                    if (n.children[1] == undefined) continue;
                     n.removeChild(n.children[1]);
                 }
             }
