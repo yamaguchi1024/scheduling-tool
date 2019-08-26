@@ -85,6 +85,9 @@ function execTest() {
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
                 const costarray = json.cost.split(/\n/);
+                const loadcostarray = json.cost.split(/\n/);
+                const storecostarray = json.cost.split(/\n/);
+                const computecostarray = json.cost.split(/\n/);
                 const tilingarray = json.tiling.split(/\n/);
                 for (let i in costarray) {
                     const button = document.createElement("button");
@@ -103,8 +106,11 @@ function execTest() {
                     button.style.backgroundColor = "#FFFFFF";
 
                     const cdiv = document.createElement("div");
-                    cdiv.setAttribute("style", "text-align: right; float: right;");
-                    cdiv.innerHTML =  " cost: " + costarray[i];
+                    cdiv.setAttribute("style", "text-align: right; float: right; overflow-y: scroll; height: 25px;");
+                    cdiv.innerHTML =  "sum cost: " + costarray[i];
+                    cdiv.innerHTML +=  "<br> load cost: " + loadcostarray[i];
+                    cdiv.innerHTML +=  "<br> store cost: " + storecostarray[i];
+                    cdiv.innerHTML +=  "<br> compute cost: " + computecostarray[i];
                     cdiv.style.backgroundColor = "#FF4136";
 
                     const div = document.createElement("div");
