@@ -142,6 +142,9 @@ function execTest() {
             {
                 const e = document.getElementById("schedule");
                 const line_cost = json.costs;
+                const load_cost = json.load_costs;
+                const store_cost = json.store_costs;
+                const compute_cost = json.compute_costs;
                 const linenum = json.linenum;
                 const nodes = e.children;
                 for (let i in nodes) {
@@ -149,7 +152,10 @@ function execTest() {
                     const stage = nodes[i];
                     if (stage.children == undefined) continue;
                     const cost_div = stage.children[1];
-                    cost_div.innerHTML += "cost: " + line_cost;
+                    cost_div.innerHTML += "sumcost: " + line_cost;
+                    cost_div.innerHTML += "<br>load cost: " + load_cost;
+                    cost_div.innerHTML += "<br>store cost: " + store_cost;
+                    cost_div.innerHTML += "<br>compute cost: " + compute_cost;
                     cost_div.style.backgroundColor = "#FF4136";
                 }
             }else if (json.type == "schedule")
@@ -185,7 +191,7 @@ function execTest() {
                     button.innerHTML += index + newline;
 
                     const linecost = document.createElement("div");
-                    linecost.setAttribute("style", "text-align: right; float: right;");
+                    linecost.setAttribute("style", "text-align: right; float: right; overflow-y:scroll; height: 25px;");
                     linecost.setAttribute("id", "linecost");
 
                     const div = document.createElement("div");
@@ -197,10 +203,22 @@ function execTest() {
                 e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
-                e.innerHTML = json.contents;
+                e.innerHTML = "";
+                const load_cost = json.load_costs;
+                const store_cost = json.store_costs;
+                const compute_cost = json.compute_costs;
+
+                const c = document.createElement("div");
+                c.setAttribute("style", "text-align: right; float: left; overflow-y:scroll; height: 23px;");
+                c.innerHTML = json.contents;
+                c.innerHTML += "<br>load cost: " + load_cost;
+                c.innerHTML += "<br>store cost: " + store_cost;
+                c.innerHTML += "<br>compute cost: " + compute_cost;
+
+                e.appendChild(c);
             } else if (json.type == "realize" ) {
                 const e = document.getElementById("cost");
-                e.innerHTML += ", " + json.contents + "ms";
+                e.innerHTML += json.contents + "ms";
             }
         }
 
