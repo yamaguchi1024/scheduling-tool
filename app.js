@@ -21,6 +21,7 @@ ipcRenderer.on('fileopen', (event, str) => {
 
 let globalexec = execTest();
 setFeatures();
+let globalcolortable;
 
 function execTest() {
     let node_attrs, edge_attrs;
@@ -193,12 +194,32 @@ function execTest() {
             {
                 const e = document.getElementById("schedule");
                 const lines = json.contents;
+                let functable = {};
                 e.innerHTML = "";
                 for (const idx in lines) {
                     const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
                     let newline = "";
+                    let func;
 
                     const button = document.createElement("button");
+                    for (const iidx in lines[idx]) {
+                        let curline = lines[idx][iidx];
+                        let fname = curline.match(/[?].*[?]/);
+                        if (fname != null) {
+                            curline = curline.replace(fname,'');
+                            func = fname[0].slice(1,-1);
+                        }
+                        // parse line and identify this block
+                        curline += "<br>";
+                        if (iidx != 0)
+                            curline = "&nbsp;&nbsp;&nbsp;" + curline;
+                        newline += curline;
+                    }
+                    if (func in functable) functable[func].push(parseInt(idx));
+                    else  functable[func] = [parseInt(idx)];
+
+                    button.innerHTML += index + newline;
+                    
                     button.onclick = function() {
                         globalexec.stdin.write(idx + "\n");
                         document.getElementById("input").disabled = false;
@@ -213,13 +234,6 @@ function execTest() {
                     };
                     button.setAttribute("style", "text-align: left");
                     button.style.backgroundColor = colors[idx%(colors.length)];
-                    for (const iidx in lines[idx]) {
-                        let curline = lines[idx][iidx] + "<br>";
-                        if (iidx != 0)
-                            curline = "&nbsp;&nbsp;&nbsp;" + curline;
-                        newline += curline;
-                    }
-                    button.innerHTML += index + newline;
 
                     const linecost = document.createElement("div");
                     linecost.setAttribute("style", "text-align: right; float: right;");
@@ -231,6 +245,7 @@ function execTest() {
                     div.appendChild(linecost);
                     e.appendChild(div);
                 }
+
                 e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
