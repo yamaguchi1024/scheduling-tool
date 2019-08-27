@@ -88,9 +88,9 @@ function execTest() {
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
                 const costarray = json.cost.split(/\n/);
-                const loadcostarray = json.cost.split(/\n/);
-                const storecostarray = json.cost.split(/\n/);
-                const computecostarray = json.cost.split(/\n/);
+                const loadcostarray = json.load_costs.split(/\n/);
+                const storecostarray = json.store_costs.split(/\n/);
+                const computecostarray = json.compute_costs.split(/\n/);
                 const tilingarray = json.tiling.split(/\n/);
                 for (let i in costarray) {
                     const button = document.createElement("button");
