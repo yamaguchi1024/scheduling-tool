@@ -108,9 +108,22 @@ function execTest() {
                     const cdiv = document.createElement("div");
                     cdiv.setAttribute("style", "text-align: right; float: right; overflow-y: scroll; height: 25px;");
                     cdiv.innerHTML =  "sum cost: " + costarray[i];
-                    cdiv.innerHTML +=  "<br> load cost: " + loadcostarray[i];
-                    cdiv.innerHTML +=  "<br> store cost: " + storecostarray[i];
-                    cdiv.innerHTML +=  "<br> compute cost: " + computecostarray[i];
+
+                    const c = document.createElement("div");
+                    c.setAttribute("id", "popup_phase1");
+                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                    c.innerHTML +=  "load cost: " + loadcostarray[i];
+                    c.innerHTML +=  "<br> store cost: " + storecostarray[i];
+                    c.innerHTML +=  "<br> compute cost: " + computecostarray[i];
+
+                    cdiv.onmouseover = function() {
+                        cdiv.children[0].style.display = 'block';
+                    };
+                    cdiv.onmouseout = function() {
+                        cdiv.children[0].style.display = 'none';
+                    };
+
+                    cdiv.appendChild(c);
                     cdiv.style.backgroundColor = "#FF4136";
 
                     const div = document.createElement("div");
@@ -159,9 +172,21 @@ function execTest() {
                     if (stage.children == undefined) continue;
                     const cost_div = stage.children[1];
                     cost_div.innerHTML += "sumcost: " + line_cost;
-                    cost_div.innerHTML += "<br>load cost: " + load_cost;
-                    cost_div.innerHTML += "<br>store cost: " + store_cost;
-                    cost_div.innerHTML += "<br>compute cost: " + compute_cost;
+
+                    const c = document.createElement("div");
+                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                    c.innerHTML +=  "load cost: " + load_cost;
+                    c.innerHTML +=  "<br> store cost: " + store_cost;
+                    c.innerHTML +=  "<br> compute cost: " + compute_cost;
+
+                    cost_div.onmouseover = function() {
+                        cost_div.children[0].style.display = 'block';
+                    };
+                    cost_div.onmouseout = function() {
+                        cost_div.children[0].style.display = 'none';
+                    };
+
+                    cost_div.appendChild(c);
                     cost_div.style.backgroundColor = "#FF4136";
                 }
             }else if (json.type == "schedule")
@@ -197,7 +222,7 @@ function execTest() {
                     button.innerHTML += index + newline;
 
                     const linecost = document.createElement("div");
-                    linecost.setAttribute("style", "text-align: right; float: right; overflow-y:scroll; height: 25px;");
+                    linecost.setAttribute("style", "text-align: right; float: right;");
                     linecost.setAttribute("id", "linecost");
 
                     const div = document.createElement("div");
