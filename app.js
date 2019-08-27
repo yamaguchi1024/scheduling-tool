@@ -22,11 +22,13 @@ ipcRenderer.on('fileopen', (event, str) => {
 let globalexec = execTest();
 setFeatures();
 let globalcolortable;
+let colors = {"red" : ["#f9b0a9", "#f79a91", "#f68479", "#f4695d"], "blue" : ["#cbcbfb", "#bcbcfa", "#a0a0f8", "#8888f7", "#6666f4"], 
+    "orange" : ["#f8cd9b", "#f6c183", "#f4b266", "#f3a64f"], "green" : ["#83f6b7", "#6bf5a9", "#4af296", "#24f07f"]};
+let abstcolors = ["red", "blue", "orange", "green"];
 
 function execTest() {
     let node_attrs, edge_attrs;
     let nodes, edges;
-    let colors = [' #0074D9 ', ' #7FDBFF ', ' #39CCCC ', ' #3D9970 ', ' #2ECC40 ', ' #FF851B ', ' #FF4136 ',  '#85144b ', ' #F012BE ', ' #B10DC9 ', ' #AAAAAA ', ' #DDDDDD '];
 
     const executable = "/home/yuka/Halide/apps/scheduling-tool/bin/" + path.parse(filename).name;
     const binary = spawn(executable,
@@ -194,6 +196,8 @@ function execTest() {
             {
                 const e = document.getElementById("schedule");
                 const lines = json.contents;
+                const phase = parseInt(json.phase);
+                const curfunc = json.func;
                 let functable = {};
                 e.innerHTML = "";
                 for (const idx in lines) {
@@ -202,6 +206,7 @@ function execTest() {
                     let func;
 
                     const button = document.createElement("button");
+                    let buttonbackgroundchange = true;
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx];
                         let fname = curline.match(/[?].*[?]/);
@@ -209,14 +214,31 @@ function execTest() {
                             curline = curline.replace(fname,'');
                             func = fname[0].slice(1,-1);
                         }
+
+                        // tilable?
+                        if (curline.match(/(tileable)/) != null) {
+                            if (func == curfunc && phase == 1)
+                                buttonbackgroundchange = false;
+                        }
+
                         // parse line and identify this block
                         curline += "<br>";
                         if (iidx != 0)
                             curline = "&nbsp;&nbsp;&nbsp;" + curline;
                         newline += curline;
                     }
+
                     if (func in functable) functable[func].push(parseInt(idx));
                     else  functable[func] = [parseInt(idx)];
+
+                    if (globalcolortable == undefined) {
+                        globalcolortable = {};
+                        globalcolortable[func] = abstcolors[0];
+                    } else if (!(func in globalcolortable))
+                        globalcolortable[func] = abstcolors[Object.keys(globalcolortable).length%(abstcolors.length)];
+
+                    let buttonbackground =
+                        buttonbackgroundchange ? colors[globalcolortable[func]][idx%(colors[globalcolortable[func]].length)] : "#FFDC00";
 
                     button.innerHTML += index + newline;
                     
@@ -233,7 +255,8 @@ function execTest() {
                         button.style.backgroundColor = prevcolor;
                     };
                     button.setAttribute("style", "text-align: left");
-                    button.style.backgroundColor = colors[idx%(colors.length)];
+
+                    button.style.backgroundColor = buttonbackground;
 
                     const linecost = document.createElement("div");
                     linecost.setAttribute("style", "text-align: right; float: right;");
