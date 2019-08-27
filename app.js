@@ -209,17 +209,25 @@ function execTest() {
                 e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
-                e.innerHTML = "";
+                e.innerHTML = json.contents + "&nbsp";
+
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
                 const compute_cost = json.compute_costs;
 
                 const c = document.createElement("div");
-                c.setAttribute("style", "text-align: right; float: left; overflow-y:scroll; height: 23px;");
-                c.innerHTML = json.contents;
-                c.innerHTML += "<br>load cost: " + load_cost;
+                c.setAttribute("id", "popup");
+                c.setAttribute("style", "display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                c.innerHTML += "load cost: " + load_cost;
                 c.innerHTML += "<br>store cost: " + store_cost;
                 c.innerHTML += "<br>compute cost: " + compute_cost;
+
+                e.onmouseover = function() {
+                    document.getElementById('popup').style.display = 'block';
+                };
+                e.onmouseout = function() {
+                    document.getElementById('popup').style.display = 'none';
+                };
 
                 e.appendChild(c);
             } else if (json.type == "realize" ) {
