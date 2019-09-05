@@ -268,8 +268,6 @@ function execTest() {
                     div.appendChild(linecost);
                     e.appendChild(div);
                 }
-
-                e.scrollTop = e.scrollHeight;
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
                 e.innerHTML = json.contents + "&nbsp";
