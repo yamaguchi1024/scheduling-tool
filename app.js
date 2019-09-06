@@ -79,7 +79,7 @@ function execTest() {
                 let options = {};
                 let network = new vis.Network(container, network_data, options);
             }
-                else if (json.type == "phase1")
+            else if (json.type == "phase1")
             {
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
@@ -135,10 +135,10 @@ function execTest() {
                     div.appendChild(cdiv);
                     suggest.appendChild(div);
                 }
-                
+
                 funcid = node_attrs.find(v => v.label === json.func).id;
             }
-                else if (json.type == "phase0")
+            else if (json.type == "phase0")
             {
                 const e = document.getElementById("instruction");
                 e.innerHTML = json.contents;
@@ -154,13 +154,13 @@ function execTest() {
                     n.removeChild(n.children[1]);
                 }
             }
-                else if (json.type == "meta")
+            else if (json.type == "meta")
             {
                 const e = document.getElementById("instruction");
                 e.innerHTML = json.contents;
 
             }
-                else if (json.type == "line_cost")
+            else if (json.type == "line_cost")
             {
                 const e = document.getElementById("schedule");
                 const line_cost = json.costs;
@@ -241,9 +241,9 @@ function execTest() {
                         buttonbackgroundchange ? colors[globalcolortable[func]][idx%(colors[globalcolortable[func]].length)] : "#FFDC00";
 
                     button.innerHTML += index + newline;
-                    
+
                     button.onclick = function() {
-                        globalexec.stdin.write(idx + "\n");
+                        globalexec.stdin.write(idx + " -1\n");
                         document.getElementById("input").disabled = false;
                     };
                     let prevcolor;
@@ -293,7 +293,22 @@ function execTest() {
                 e.appendChild(c);
             } else if (json.type == "realize" ) {
                 const e = document.getElementById("cost");
-                e.innerHTML += json.contents + "ms";
+                e.innerHTML += json.contents + "ms  ";
+
+                const button = document.createElement("button");
+                button.onclick = function() {
+                    globalexec.stdin.write("-1 -1\n");
+                };
+                button.onmouseover = function() {
+                    button.style.backgroundColor = "#FFDC00";
+                };
+                button.onmouseout = function() {
+                    button.style.backgroundColor = "#FFFFFF";
+                };
+                button.setAttribute("style", "text-align: left");
+                button.innerHTML = "undo";
+                button.style.backgroundColor = "#FFFFFF";
+                e.appendChild(button);
             }
         }
 
