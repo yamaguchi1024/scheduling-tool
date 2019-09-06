@@ -238,7 +238,7 @@ function execTest() {
                         globalcolortable[func] = abstcolors[Object.keys(globalcolortable).length%(abstcolors.length)];
 
                     let buttonbackground =
-                        buttonbackgroundchange ? colors[globalcolortable[func]][idx%(colors[globalcolortable[func]].length)] : "#FFDC00";
+                        buttonbackgroundchange ? colors[globalcolortable[func]][idx%(colors[globalcolortable[func]].length)] : "#00FF00";
 
                     button.innerHTML += index + newline;
 
