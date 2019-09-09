@@ -295,20 +295,36 @@ function execTest() {
                 const e = document.getElementById("cost");
                 e.innerHTML += json.contents + "ms  ";
 
-                const button = document.createElement("button");
-                button.onclick = function() {
+                const undobutton = document.createElement("button");
+                undobutton.onclick = function() {
                     globalexec.stdin.write("-1 -1\n");
                 };
-                button.onmouseover = function() {
-                    button.style.backgroundColor = "#FFDC00";
+                undobutton.onmouseover = function() {
+                    undobutton.style.backgroundColor = "#FFDC00";
                 };
-                button.onmouseout = function() {
-                    button.style.backgroundColor = "#FFFFFF";
+                undobutton.onmouseout = function() {
+                    undobutton.style.backgroundColor = "#FFFFFF";
                 };
-                button.setAttribute("style", "text-align: left");
-                button.innerHTML = "undo";
-                button.style.backgroundColor = "#FFFFFF";
-                e.appendChild(button);
+                undobutton.setAttribute("style", "text-align: left");
+                undobutton.innerHTML = "undo";
+                undobutton.style.backgroundColor = "#FFFFFF";
+
+                const redobutton = document.createElement("button");
+                redobutton.onclick = function() {
+                    globalexec.stdin.write("-2 -2\n");
+                };
+                redobutton.onmouseover = function() {
+                    redobutton.style.backgroundColor = "#FFDC00";
+                };
+                redobutton.onmouseout = function() {
+                    redobutton.style.backgroundColor = "#FFFFFF";
+                };
+                redobutton.setAttribute("style", "text-align: left");
+                redobutton.innerHTML = "redo";
+                redobutton.style.backgroundColor = "#FFFFFF";
+
+                e.appendChild(undobutton);
+                e.appendChild(redobutton);
             }
         }
 
