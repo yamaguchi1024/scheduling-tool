@@ -89,6 +89,7 @@ function execTest() {
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
                 const costarray = json.cost.split(/\n/);
+                const runtimearray = json.runtime.split(/\n/);
                 const loadcostarray = json.load_costs.split(/\n/);
                 const storecostarray = json.store_costs.split(/\n/);
                 const computecostarray = json.compute_costs.split(/\n/);
@@ -110,8 +111,12 @@ function execTest() {
                     button.style.backgroundColor = "#FFFFFF";
 
                     const cdiv = document.createElement("div");
-                    cdiv.setAttribute("style", "text-align: right; float: right; overflow-y: scroll; height: 25px;");
-                    cdiv.innerHTML =  "sum cost: " + costarray[i];
+                    const rdiv = document.createElement("div");
+                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
+                    cdiv.innerHTML =  "cost: " + costarray[i];
+                    rdiv.innerHTML =  "runtime: " + runtimearray[i] + "ms";
+                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 4px;");
+                    rdiv.style.backgroundColor = "#3189e8";
 
                     const c = document.createElement("div");
                     c.setAttribute("id", "popup_phase1");
@@ -134,6 +139,7 @@ function execTest() {
                     div.setAttribute("style", "padding: 0; margin: 0px;");
                     div.appendChild(button);
                     div.appendChild(cdiv);
+                    div.appendChild(rdiv);
                     suggest.appendChild(div);
                 }
 
@@ -168,6 +174,7 @@ function execTest() {
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
                 const compute_cost = json.compute_costs;
+                const runtime = json.runtime;
                 const linenum = json.linenum;
                 const nodes = e.children;
                 for (let i in nodes) {
@@ -175,7 +182,15 @@ function execTest() {
                     const stage = nodes[i];
                     if (stage.children == undefined) continue;
                     const cost_div = stage.children[1];
-                    cost_div.innerHTML += "sumcost: " + line_cost;
+                    const cdiv = document.createElement("div");
+                    const rdiv = document.createElement("div");
+                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
+                    cdiv.style.backgroundColor = "#FF4136";
+                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 4px;");
+                    rdiv.style.backgroundColor = "#3189e8";
+
+                    cdiv.innerHTML = "cost: " + line_cost;
+                    rdiv.innerHTML = "runtime: " + runtime + "ms";
 
                     const c = document.createElement("div");
                     c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
@@ -183,15 +198,16 @@ function execTest() {
                     c.innerHTML +=  "<br> store cost: " + store_cost;
                     c.innerHTML +=  "<br> compute cost: " + compute_cost;
 
-                    cost_div.onmouseover = function() {
-                        cost_div.children[0].style.display = 'block';
+                    cdiv.onmouseover = function() {
+                        cdiv.children[0].style.display = 'block';
                     };
-                    cost_div.onmouseout = function() {
-                        cost_div.children[0].style.display = 'none';
+                    cdiv.onmouseout = function() {
+                        cdiv.children[0].style.display = 'none';
                     };
 
-                    cost_div.appendChild(c);
-                    cost_div.style.backgroundColor = "#FF4136";
+                    cdiv.appendChild(c);
+                    cost_div.appendChild(cdiv);
+                    cost_div.appendChild(rdiv);
                 }
             }else if (json.type == "schedule")
             {
