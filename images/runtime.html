@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/offline-exporting.js"></script
+
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://blacklabel.github.io/grouped_categories/grouped-categories.js"></script>
+  </head>
+  <body>
+    <div id="container" class="chart-container"></div>
+    <script>
+	Highcharts.chart('container', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'RunTime'
+    },
+    subtitle: {
+        text: 'Measurement of the scheduling task runtime with Manual and Scheduling Tool'
+    },
+    xAxis: {
+        categories: ['Tzu-mao', 'Luke'],
+        title: {
+            text: "Participants"
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'ms',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: 'ms'
+    },
+    plotOptions: {
+    		column: {
+        		colorByPoint : true
+            },
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    'colors' : ['red', 'green', '#E52731'],
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Manual Scheduling',
+        data: [34.69, 37.3162]
+    },{
+        name: 'Scheduling Tool',
+        data: [35.1774, 29.5281]
+    }]
+});
+    </script>
+  </body>
+</html>
