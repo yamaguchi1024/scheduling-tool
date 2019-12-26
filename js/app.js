@@ -16,11 +16,9 @@ ipcRenderer.on('fileopen', (event, str) => {
     document.getElementById("input").addEventListener('keypress', inputListener, true);
 
     globalexec = execTest();
-    setFeatures();
 });
 
 let globalexec = execTest();
-setFeatures();
 let globalcolortable;
 let colors = {"red" : ["#f9b0a9", "#f79a91", "#f68479", "#f4695d"], "blue" : ["#cbcbfb", "#bcbcfa", "#a0a0f8", "#8888f7", "#6666f4"], 
     "orange" : ["#f8cd9b", "#f6c183", "#f4b266", "#f3a64f"], "green" : ["#83f6b7", "#6bf5a9", "#4af296", "#24f07f"]};
@@ -375,11 +373,4 @@ function inputListener(e) {
     const input = e.target.value;
     e.target.value = '';
     globalexec.stdin.write(input + "\n");
-};
-
-function setFeatures() {
-    fs.readFile(filename, 'utf-8', (err, data) => {
-        const res = hljs.highlight("gml", data);
-        document.getElementById("algorithm").innerHTML = res.value;
-    });
 };
