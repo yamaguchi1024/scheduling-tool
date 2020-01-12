@@ -211,6 +211,7 @@ function execTest() {
             {
                 const e = document.getElementById("schedule");
                 const lines = json.contents;
+                updateVis(lines);
                 const phase = parseInt(json.phase);
                 const curfunc = json.func;
                 let functable = {};

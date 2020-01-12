@@ -166,19 +166,11 @@ function init() {
         const light = new THREE.AmbientLight( 0x222222 );
         scene.add( light );
     }
-
-    // GUI
-    options = {
-        'Load Texture': loadTexture,
-    };
-
-    gui = new dat.GUI();
-    gui.add(options, 'Load Texture');
 }
 
 // Update Visualization given the current schedule
 function updateVis(curSchedule) {
-    let lines = curSchedule.split('\n');
+    let lines = curSchedule;
     // [0] -> func name
     // [1] -> tile size [c, y, x]
     // [2] -> small tile size
@@ -258,25 +250,6 @@ function updateVis(curSchedule) {
 
     render();
 }
-
-// Load schedule file from local file
-function loadTexture() {
-    let file = document.createElement('input');
-    file.type = "file";
-    file.click();
-
-    file.onchange = function () {
-        if(file.value) {
-            let reader = new FileReader();
-            reader.readAsDataURL(file.files[0]);
-            reader.onload = function() {
-                let result = reader.result;
-                curSchedule = atob(result.split('base64,')[1]);
-                updateVis(curSchedule);
-            }
-        }
-    }
-};
 
 function animate() {
     requestAnimationFrame( animate );
