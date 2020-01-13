@@ -121,11 +121,12 @@ function execTest() {
 
                     const cdiv = document.createElement("div");
                     const rdiv = document.createElement("div");
-                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
-                    cdiv.innerHTML =  "cost: " + costarray[i];
-                    rdiv.innerHTML =  "runtime: " + runtimearray[i] + "ms";
-                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 4px;");
-                    rdiv.style.backgroundColor = "#3189e8";
+                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 6px;");
+                    cdiv.innerHTML =  costarray[i];
+                    rdiv.innerHTML =  parseFloat(runtimearray[i]).toFixed(3) + "ms";
+                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
+                    //rdiv.style.backgroundColor = "#3189e8";
+                    rdiv.style.color = "#3189e8";
 
                     const c = document.createElement("div");
                     c.setAttribute("id", "popup_phase1");
@@ -142,13 +143,14 @@ function execTest() {
                     };
 
                     cdiv.appendChild(c);
-                    cdiv.style.backgroundColor = "#FF4136";
+                    //cdiv.style.backgroundColor = "#FF4136";
+                    cdiv.style.color = "#FF6666";
 
                     const div = document.createElement("div");
                     div.setAttribute("style", "padding: 0; margin: 0px;");
                     div.appendChild(button);
-                    div.appendChild(cdiv);
                     div.appendChild(rdiv);
+                    div.appendChild(cdiv);
                     suggest.appendChild(div);
                 }
 

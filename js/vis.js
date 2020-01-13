@@ -132,7 +132,7 @@ function init() {
     canvas.addEventListener('mousemove', onMousemove);
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xFFFFFF );
+    scene.background = new THREE.Color( 0xA9A9A9 );
 
     renderer = new THREE.WebGLRenderer({
         antialias: true,
