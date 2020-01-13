@@ -125,12 +125,11 @@ function execTest() {
                     cdiv.innerHTML =  costarray[i];
                     rdiv.innerHTML =  parseFloat(runtimearray[i]).toFixed(3) + "ms";
                     rdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
-                    //rdiv.style.backgroundColor = "#3189e8";
                     rdiv.style.color = "#3189e8";
 
                     const c = document.createElement("div");
                     c.setAttribute("id", "popup_phase1");
-                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid black; color: black");
                     c.innerHTML +=  "load cost: " + loadcostarray[i];
                     c.innerHTML +=  "<br> store cost: " + storecostarray[i];
                     c.innerHTML +=  "<br> compute cost: " + computecostarray[i];
@@ -143,7 +142,6 @@ function execTest() {
                     };
 
                     cdiv.appendChild(c);
-                    //cdiv.style.backgroundColor = "#FF4136";
                     cdiv.style.color = "#FF6666";
 
                     const div = document.createElement("div");
@@ -195,16 +193,16 @@ function execTest() {
                     const cost_div = stage.children[1];
                     const cdiv = document.createElement("div");
                     const rdiv = document.createElement("div");
-                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
-                    cdiv.style.backgroundColor = "#FF4136";
-                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 4px;");
-                    rdiv.style.backgroundColor = "#3189e8";
+                    cdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 6px;");
+                    cdiv.style.color = "#FF6666";
+                    rdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
+                    rdiv.style.color = "#3189e8";
 
-                    cdiv.innerHTML = "cost: " + line_cost;
-                    rdiv.innerHTML = "runtime: " + runtime + "ms";
+                    cdiv.innerHTML = line_cost;
+                    rdiv.innerHTML = parseFloat(runtime).toFixed(3) + "ms";
 
                     const c = document.createElement("div");
-                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid black; color: black");
                     c.innerHTML +=  "load cost: " + load_cost;
                     c.innerHTML +=  "<br> store cost: " + store_cost;
                     c.innerHTML +=  "<br> compute cost: " + compute_cost;
@@ -217,8 +215,8 @@ function execTest() {
                     };
 
                     cdiv.appendChild(c);
-                    cost_div.appendChild(cdiv);
                     cost_div.appendChild(rdiv);
+                    cost_div.appendChild(cdiv);
                 }
             }else if (json.type == "schedule")
             {
@@ -299,7 +297,7 @@ function execTest() {
                 }
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
-                e.innerHTML = json.contents + "&nbsp";
+                e.innerHTML = `Current Cost: <span style="color: #FF6666;">${json.contents}</span>, `;
 
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
@@ -307,7 +305,7 @@ function execTest() {
 
                 const c = document.createElement("div");
                 c.setAttribute("id", "popup");
-                c.setAttribute("style", "display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1;");
+                c.setAttribute("style", "display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
                 c.innerHTML += "load cost: " + load_cost;
                 c.innerHTML += "<br>store cost: " + store_cost;
                 c.innerHTML += "<br>compute cost: " + compute_cost;
@@ -322,7 +320,7 @@ function execTest() {
                 e.appendChild(c);
             } else if (json.type == "realize" ) {
                 const e = document.getElementById("cost");
-                e.innerHTML += json.contents + "ms  ";
+                e.innerHTML += `Run Time: <span style="color: #3189e8;">${json.contents.toFixed(3)}ms</span> `;
 
                 const undobutton = document.createElement("button");
                 undobutton.onclick = function() {
