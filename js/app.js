@@ -75,11 +75,21 @@ function execTest() {
                     edges: edges
                 };
 
-                let options = {};
+                let options = {
+                    layout: {
+                        hierarchical: {
+                            direction: "LR",
+                        }
+                    },
+                    nodes: {
+                        shape: 'box'
+                    }
+                };
                 let network = new vis.Network(container, network_data, options);
             }
             else if (json.type == "phase1")
             {
+                document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
                 inst.innerHTML += " or type tiling size (y x)";
@@ -96,6 +106,7 @@ function execTest() {
                     const button = document.createElement("button");
                     button.onclick = function() {
                         globalexec.stdin.write("0 " + i + "\n");
+                        document.getElementById('tile').classList.add('inactive');
                     };
                     button.onmouseover = function() {
                         button.style.backgroundColor = "#FFDC00";
