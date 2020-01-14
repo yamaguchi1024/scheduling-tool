@@ -1,130 +1,9 @@
 let camera, controls, scene, renderer;
-const layers = [];
-const Mesh2Board = new WeakMap();
-const Board2Mesh = new WeakMap();
-
-class Board {
-    constructor(ridx, cidx, layer, mat) {
-        this.ridx = ridx;
-        this.cidx = cidx;
-        this.layer = layer;
-        this.mat = mat;
-    }
-    pos() {
-        return ({
-            x: 60 * this.ridx,
-            z: 60 * this.cidx,
-            y: this.layer.y(),
-        });
-    }
-}
-
-class Layer {
-    constructor(rows, cols, idx, color, prev, fun) {
-        this.rows = rows;
-        this.cols = cols;
-        this.idx  = idx;
-        this.color = color;
-        this.prev = prev;
-        this.fun = fun;
-
-        this.children = [...Array(this.rows).keys()].flatMap(r =>
-            [...Array(this.cols).keys()].map(c =>
-                new Board(r, c, this, this.fun(r, c, this.prev))
-            ));
-    };
-
-    y() {
-        return -50 * (this.idx - layers.length/2);
-    }
-};
 
 init();
 animate();
 
-const lines = new Set();
-let texts = new Set();
-let highlight = null;
 function onMousemove(ev) {
-    const elm = ev.currentTarget;
-    const x = ev.clientX - elm.offsetLeft;
-    const y = ev.clientY - elm.offsetTop;
-    const w = elm.offsetWidth;
-    const h = elm.offsetHeight;
-
-    const mouse = new THREE.Vector2();
-    mouse.x =  (x / w) * 2 - 1;
-    mouse.y = -(y / h) * 2 + 1;
-
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, camera);
-    const inters = raycaster.intersectObjects(scene.children);
-
-    lines.forEach(l => scene.remove(l));
-    lines.forEach(l => [l.geometry, l.material].forEach(obj => obj.dispose()));
-    lines.clear();
-
-    const loader = new THREE.FontLoader();
-    loader.load('font/helvetiker_regular.typeface.json', (font) => {
-        const newTexts = new Set();
-
-        for(const inter of inters) {
-            const board = Mesh2Board.get(inter.object);
-            if(!board) continue;
-
-            if(highlight) highlight.opacity = 0.7;
-            highlight = inter.object.material;
-            highlight.opacity = 1;
-
-            const spos = board.pos();
-            const params = inter.object.geometry.parameters;
-            //const size = [params.width, params.height, params.depth];
-            const size = [params.width, params.depth];
-            for (s in size) {
-                const text = new THREE.Mesh(
-                    new THREE.TextGeometry(size[s].toString(), {
-                        font,
-                        size: 5,
-                        height: 1,
-                    }),
-                    new THREE.MeshBasicMaterial({color: 0xffffff}),
-                );
-                text.position.x = inter.object.position.x - 2;
-                text.position.y = inter.object.position.y;
-                text.position.z = inter.object.position.z;
-                if (s == 0) // width
-                    text.position.z -= params.depth/2 + 5;
-                if (s == 1) // depth
-                    text.position.x += params.width/2 + 4;
-                text.rotation.x = Math.PI*3/2;
-                scene.add(text);
-                newTexts.add(text);
-            }
-
-            if(board.layer.prev) {
-                // create lines
-
-                const mat = new THREE.LineBasicMaterial({
-                    color: 0x0000ff
-                });
-                for(const t of board.layer.prev.children) {
-                    const tpos = t.pos();
-                    const geo = new THREE.Geometry();
-                    geo.vertices.push(
-                        new THREE.Vector3(spos.x, spos.y, spos.z),
-                        new THREE.Vector3(tpos.x, tpos.y, tpos.z),
-                    );
-                    const line = new THREE.Line(geo, mat);
-                    lines.add(line)
-                    scene.add(line);
-                }
-            }
-            break;
-        } 
-        texts.forEach(l => scene.remove(l));
-        texts.forEach(l => [l.geometry, l.material].forEach(obj => obj.dispose()));
-        texts = newTexts;
-    });
 }
 
 function init() {
@@ -168,84 +47,81 @@ function init() {
     }
 }
 
+const imageWidth = 2560;
+const imageHeight = 1600;
+
 // Update Visualization given the current schedule
-function updateVis(curSchedule) {
-    let lines = curSchedule;
-    //console.log(lines);
-    // [0] -> func name
-    // [1] -> tile size [c, y, x]
-    // [2] -> small tile size
+function updateVis(schedule) {
+    // Reset!
+    init();
+
+    let prevWidth = imageWidth;
+    let prevHeight = imageHeight;
+    // [y, x]
     let funcs = [];
-    for (let i = 0; i < lines.length; i++) {
-        let curLine = lines[i];
-        if (curLine.includes("produce")) {
-            let space = curLine.split(" ");
-            let fN = space[space.length-1].slice(0, -1);
-            funcs.push([fN, [1, 0, 0], 0]);
+    for (let i = 0; i < schedule.length; i++) {
+        let block = schedule[i];
+        for (line in block) {
+            if (!line.includes("for")) continue;
         }
-        if (curLine.includes("for")) {
-            if (curLine.includes("in")) {
-                let regexp = RegExp('\\[(.+), (.+)\\]');
-                let m = curLine.match(regexp);
-                let min = parseInt(m[1]);
-                let max = parseInt(m[2]);
-                funcs[funcs.length-1][2] = max - min + 1;
-            } else {
-                let space = curLine.split(" ");
-                let vN = space[space.length-1].slice(0, -1);
-                // default image size
-                if (vN.includes('c'))
-                    funcs[funcs.length-1][1][0] = 3;
-                if (vN.includes('y'))
-                    funcs[funcs.length-1][1][1] = 1024;
-                if (vN.includes('x'))
-                    funcs[funcs.length-1][1][2] = 1024;
+
+        // includes "for"
+        for (line of block) {
+            if (line.includes("tileable")) {
+            } else if (line.includes("innermost")) {
+            } else if (line.includes("vectorized")) {
+            } else if (line.includes("for")) {
+                const l = line.replace('&nbsp;', ' ');
+                let regexp = /for[ ]+(.)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
+                let m = l.match(regexp);
+                const fname = m[1];
+                const xory = m[2];
+                const min = 0;
+                const max = m[3];
+
+                const range = max - min + 1;
+                let curWidth;
+                let curHeight;
+                if (xory == 'y') {
+                    curHeight = prevHeight / range;
+                    prevHeight = curHeight;
+                    funcs.push([curHeight, 0]);
+                } else if (xory == 'x') {
+                    curWidth = prevWidth / range;
+                    prevWidth = curWidth;
+                    funcs[funcs.length - 1][1] = curWidth;
+                }
             }
         }
-    }
-
-    const texture = new THREE.TextureLoader().load('risu.png');
-    // Add layer
-    {
-        const [inputC, inputY, inputX] = [3, 64, 64];
-        let [prevC, prevY, prevX] = [inputC, inputY, inputX];
-
-        for(const i in funcs) {
-            const [name, [c, y, x], s] = funcs[i];
-            if(s === 0) {
-                layers.push(new Layer(1, 1, i, 0xcccccc, layers[layers.length - 1] || null, () => texture));
-            } else {
-                layers.push(new Layer(prevX / s, prevY / s, i, 0xcccccc, layers[layers.length - 1] || null, () => texture));
-            }
-            [prevC, prevY, prevX] = [c, y, x];
-        }
-        layers.push(new Layer(1, 1, layers.length, 0xcccccc, layers[layers.length - 1] || null, () => texture));
     }
 
     // world
-
-    layers.forEach( (layer, idx) => {
-        layer.children.forEach((board) => {
-            const geometry = new THREE.BoxGeometry(60/layer.rows, 10, 60/layer.cols);
-            const material = new THREE.MeshPhongMaterial( {
-                color: layer.color,
-                bumpMap: board.mat,
-                flatShading: true,
-                transparent: true,
-                opacity: 0.7,
-            });
-            const mesh = new THREE.Mesh(geometry, material);
-            const pos = board.pos();
-            mesh.position.x = pos.x;
-            mesh.position.y = pos.y;
-            mesh.position.z = pos.z;
-            mesh.updateMatrix();
-            mesh.matrixAutoUpdate = false;
-            Mesh2Board.set(mesh, board);
-            Board2Mesh.set(board, mesh);
-            scene.add( mesh );
+    for (i in funcs) {
+        const c = 50;
+        const size_y = Math.log(funcs[i][0])*c;
+        const size_x = Math.log(funcs[i][1])*c;
+        const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
+        const material = new THREE.MeshPhongMaterial( {
+            color: 0x000000,
+            flatShading: true,
+            transparent: true,
+            opacity: 0.7,
         });
-    });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = 0;
+        mesh.position.y = -100 * (i - (funcs.length-1)/2);
+        mesh.position.z = 0;
+        mesh.updateMatrix();
+        mesh.matrixAutoUpdate = false;
+        scene.add( mesh );
+    }
+    for(let i=0; i<funcs.length+1; i++) {
+        const dir = new THREE.Vector3(0, -1, 0);
+        const len = 50;
+        const origin = new THREE.Vector3(0, -100 * (i - (funcs.length-1)/2 - 1/2) + len/2, 0);
+        const arrow = new THREE.ArrowHelper(dir, origin, len, 0x00FFFF, 0.2 * len, 0.5 * len);
+        scene.add(arrow);
+    }
 
     render();
 }
