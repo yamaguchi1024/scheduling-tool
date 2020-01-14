@@ -72,7 +72,7 @@ function updateVis(schedule) {
             } else if (line.includes("vectorized")) {
             } else if (line.includes("for")) {
                 const l = line.replace('&nbsp;', ' ');
-                let regexp = /for[ ]+(.)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
+                let regexp = /for[ ]+(.+)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
                 let m = l.match(regexp);
                 const fname = m[1];
                 const xory = m[2];
