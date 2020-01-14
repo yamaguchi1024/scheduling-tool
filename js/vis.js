@@ -171,6 +171,7 @@ function init() {
 // Update Visualization given the current schedule
 function updateVis(curSchedule) {
     let lines = curSchedule;
+    //console.log(lines);
     // [0] -> func name
     // [1] -> tile size [c, y, x]
     // [2] -> small tile size
@@ -202,7 +203,6 @@ function updateVis(curSchedule) {
             }
         }
     }
-    console.log(funcs);
 
     const texture = new THREE.TextureLoader().load('risu.png');
     // Add layer
@@ -225,7 +225,6 @@ function updateVis(curSchedule) {
     // world
 
     layers.forEach( (layer, idx) => {
-        console.log(layer.children[0].pos());
         layer.children.forEach((board) => {
             const geometry = new THREE.BoxGeometry(60/layer.rows, 10, 60/layer.cols);
             const material = new THREE.MeshPhongMaterial( {
