@@ -11,7 +11,7 @@ const path = require('path');
 let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
 let globalexec = execTest();
 let globalcolortable = {};
-const colors = ["#D86334", "#CA431E", "#DDCCC2", "#056C83", "#023859"];
+const colors = ["#D86334", "#023859", "#CA431E", "#DDCCC2", "#056C83"];
 
 ipcRenderer.on('fileopen', (event, str) => {
     globalcolortable = {};

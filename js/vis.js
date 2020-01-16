@@ -11,7 +11,7 @@ function init() {
     canvas.addEventListener('mousemove', onMousemove);
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xA9A9A9 );
+    scene.background = new THREE.Color( 0xFFFFFF );
 
     renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -55,8 +55,7 @@ function updateVis(schedule) {
     // Reset!
     init();
 
-    let prevWidth = imageWidth;
-    let prevHeight = imageHeight;
+    let prevSize = [[imageHeight, imageWidth]];
     // [y, x]
     let funcs = [];
     let sizes = [];
@@ -66,12 +65,14 @@ function updateVis(schedule) {
             if (!line.includes("for")) continue;
         }
 
+        let curHeight, curWidth;
         // includes "for"
         for (line of block) {
             if (line.includes("tileable")) {
             } else if (line.includes("innermost")) {
             } else if (line.includes("vectorized")) {
             } else if (line.includes("for")) {
+                const nestcount = (line.match(/&nbsp;/g) || []).length / 4;
                 const l = line.replace('&nbsp;', ' ');
                 let regexp = /for[ ]+(.+)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
                 let m = l.match(regexp);
@@ -80,28 +81,52 @@ function updateVis(schedule) {
                 const min = 0;
                 const max = m[3];
 
-                const range = max - min + 1;
-                let curWidth;
-                let curHeight;
+                const range = max - min;
                 if (xory == 'y') {
-                    curHeight = prevHeight / range;
-                    prevHeight = curHeight;
-                    sizes.push([curHeight, 0]);
+                    const prev = prevSize[nestcount - 1][0];
+                    curHeight = (range == 0) ? prev : (prev / range);
                 } else if (xory == 'x') {
-                    curWidth = prevWidth / range;
-                    prevWidth = curWidth;
-                    sizes[sizes.length - 1][1] = curWidth;
+                    const prev = prevSize[nestcount - 1][1];
+                    curWidth = (range == 0) ? prev : (prev / range);
+
+                    // First to reach this nest level
+                    if (prevSize.length == nestcount) {
+                        prevSize.push([curHeight, curWidth]);
+                    } else if (prevSize.length > nestcount) {
+                        // update!
+                        prevSize[nestcount] = [curHeight, curWidth];
+                    }
+                    sizes.push([curHeight, curWidth]);
                     funcs.push(fname);
                 }
             }
         }
     }
 
+    for (;;) {
+        let bool = true;
+        for (i in sizes) {
+        let sy = sizes[i][0];
+        let sx = sizes[i][1];
+            if (sy < 0 || sx < 0) {
+                bool = false;
+                for (j in sizes) {
+                    sizes[j][0] *= 10;
+                    sizes[j][1] *= 10;
+                }
+                break;
+            };
+        }
+        if (bool) break;
+    }
+
     // world
     for (i in sizes) {
+        let sy = sizes[i][0];
+        let sx = sizes[i][1];
         const c = 50;
-        const size_y = Math.log(sizes[i][0])*c;
-        const size_x = Math.log(sizes[i][1])*c;
+        const size_y = Math.log(sy)*c;
+        const size_x = Math.log(sx)*c;
         const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
         const material = new THREE.MeshPhongMaterial( {
             color: globalcolortable[funcs[i]],
