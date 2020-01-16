@@ -9,20 +9,18 @@ const vis = require('vis');
 const path = require('path');
 
 let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
+let globalexec = execTest();
+let globalcolortable = {};
+const colors = ["#D86334", "#CA431E", "#DDCCC2", "#056C83", "#023859"];
 
 ipcRenderer.on('fileopen', (event, str) => {
+    globalcolortable = {};
     filename = str;
     globalexec.kill();
     document.getElementById("input").addEventListener('keypress', inputListener, true);
 
     globalexec = execTest();
 });
-
-let globalexec = execTest();
-let globalcolortable;
-let colors = {"red" : ["#f9b0a9", "#f79a91", "#f68479", "#f4695d"], "blue" : ["#cbcbfb", "#bcbcfa", "#a0a0f8", "#8888f7", "#6666f4"], 
-    "orange" : ["#f8cd9b", "#f6c183", "#f4b266", "#f3a64f"], "green" : ["#83f6b7", "#6bf5a9", "#4af296", "#24f07f"]};
-let abstcolors = ["red", "blue", "orange", "green"];
 
 function execTest() {
     let node_attrs, edge_attrs;
@@ -258,14 +256,11 @@ function execTest() {
                     if (func in functable) functable[func].push(parseInt(idx));
                     else  functable[func] = [parseInt(idx)];
 
-                    if (globalcolortable == undefined) {
-                        globalcolortable = {};
-                        globalcolortable[func] = abstcolors[0];
-                    } else if (!(func in globalcolortable))
-                        globalcolortable[func] = abstcolors[Object.keys(globalcolortable).length%(abstcolors.length)];
+                    if (!(func in globalcolortable))
+                        globalcolortable[func] = colors[Object.keys(globalcolortable).length%(colors.length)];
 
                     let buttonbackground =
-                        buttonbackgroundchange ? colors[globalcolortable[func]][idx%(colors[globalcolortable[func]].length)] : "#00FF00";
+                        buttonbackgroundchange ? globalcolortable[func] : "#00FF00";
 
                     button.innerHTML += index + newline;
 
