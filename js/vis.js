@@ -97,13 +97,6 @@ function updateVis(schedule) {
         }
     }
 
-    /*
-                    if (!(func in globalcolortable))
-                        globalcolortable[func] = colors[Object.keys(globalcolortable).length%(colors.length)];
-
-                    let buttonbackground =
-                        buttonbackgroundchange ? globalcolortable[func] : "#00FF00";
-    */
     // world
     for (i in sizes) {
         const c = 50;
@@ -111,7 +104,7 @@ function updateVis(schedule) {
         const size_x = Math.log(sizes[i][1])*c;
         const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
         const material = new THREE.MeshPhongMaterial( {
-            color: 0x000000,
+            color: globalcolortable[funcs[i]],
             flatShading: true,
             transparent: true,
             opacity: 0.7,
