@@ -59,6 +59,7 @@ function updateVis(schedule) {
     let prevHeight = imageHeight;
     // [y, x]
     let funcs = [];
+    let sizes = [];
     for (let i = 0; i < schedule.length; i++) {
         let block = schedule[i];
         for (line in block) {
@@ -85,21 +86,29 @@ function updateVis(schedule) {
                 if (xory == 'y') {
                     curHeight = prevHeight / range;
                     prevHeight = curHeight;
-                    funcs.push([curHeight, 0]);
+                    sizes.push([curHeight, 0]);
                 } else if (xory == 'x') {
                     curWidth = prevWidth / range;
                     prevWidth = curWidth;
-                    funcs[funcs.length - 1][1] = curWidth;
+                    sizes[sizes.length - 1][1] = curWidth;
+                    funcs.push(fname);
                 }
             }
         }
     }
 
+    /*
+                    if (!(func in globalcolortable))
+                        globalcolortable[func] = colors[Object.keys(globalcolortable).length%(colors.length)];
+
+                    let buttonbackground =
+                        buttonbackgroundchange ? globalcolortable[func] : "#00FF00";
+    */
     // world
-    for (i in funcs) {
+    for (i in sizes) {
         const c = 50;
-        const size_y = Math.log(funcs[i][0])*c;
-        const size_x = Math.log(funcs[i][1])*c;
+        const size_y = Math.log(sizes[i][0])*c;
+        const size_x = Math.log(sizes[i][1])*c;
         const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
         const material = new THREE.MeshPhongMaterial( {
             color: 0x000000,
@@ -109,16 +118,16 @@ function updateVis(schedule) {
         });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = 0;
-        mesh.position.y = -100 * (i - (funcs.length-1)/2);
+        mesh.position.y = -100 * (i - (sizes.length-1)/2);
         mesh.position.z = 0;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
     }
-    for(let i=0; i<funcs.length+1; i++) {
+    for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
         const len = 50;
-        const origin = new THREE.Vector3(0, -100 * (i - (funcs.length-1)/2 - 1/2) + len/2, 0);
+        const origin = new THREE.Vector3(0, -100 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
         const arrow = new THREE.ArrowHelper(dir, origin, len, 0x00FFFF, 0.2 * len, 0.5 * len);
         scene.add(arrow);
     }
