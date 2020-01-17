@@ -309,7 +309,7 @@ function execTest() {
                     linecost.setAttribute("id", "linecost");
 
                     const div = document.createElement("div");
-                    div.setAttribute("style", "padding: 3px; margin: 0px;");
+                    div.setAttribute("style", "padding: 3px; margin: 0px; border-bottom: 1px dashed black;");
                     div.appendChild(button);
                     div.appendChild(hontai);
                     div.appendChild(linecost);
