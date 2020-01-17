@@ -93,6 +93,14 @@ function execTest() {
             }
             else if (json.type == "phase1")
             {
+                // Disable non-clickable scheduling buttons
+                const scheduleElements = document.getElementById("schedule").children;
+                for (let s of scheduleElements) {
+                    if (s.children == undefined) continue;
+                    const button = s.children[0];
+                    button.disabled = true;
+                }
+
                 maxLineNum = 0;
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
@@ -309,7 +317,7 @@ function execTest() {
                     linecost.setAttribute("id", "linecost");
 
                     const div = document.createElement("div");
-                    div.setAttribute("style", "padding: 3px; margin: 0px; border-bottom: 1px dashed black;");
+                    div.setAttribute("style", "padding: 7px; margin: 0px; border-bottom: 1px dashed black;");
                     div.appendChild(button);
                     div.appendChild(hontai);
                     div.appendChild(linecost);
