@@ -1,14 +1,19 @@
-let camera, controls, scene, renderer;
+let camera, controls, scene, renderer, raycaster, canvas;
+let mouse = new THREE.Vector2();
+let rayRecieveObjects = [];
+let intersected = [];
 
 init();
 animate();
 
-function onMousemove(ev) {
-}
+function onMousemove(event) {
+    event.preventDefault();
+    mouse.x = ( (event.clientX - canvas.width) / (canvas.width) ) * 2 - 1;
+	mouse.y = - ( event.clientY / canvas.height ) * 2 + 1;
+};
 
 function init() {
-    const canvas = document.getElementById('visualization');
-    canvas.addEventListener('mousemove', onMousemove);
+    canvas = document.getElementById('visualization');
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xFFFFFF );
@@ -45,6 +50,9 @@ function init() {
         const light = new THREE.AmbientLight( 0x222222 );
         scene.add( light );
     }
+
+    raycaster = new THREE.Raycaster();
+    document.addEventListener('mousemove', onMousemove);
 }
 
 const imageWidth = 2560;
@@ -141,6 +149,7 @@ function updateVis(schedule) {
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
+        rayRecieveObjects.push(mesh);
     }
     for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
@@ -153,9 +162,36 @@ function updateVis(schedule) {
     render();
 }
 
+function updateHighlight() {
+    raycaster.setFromCamera( mouse, camera );
+    const intersects = raycaster.intersectObjects( rayRecieveObjects );
+
+    for (iobj of intersected) {
+        let flag = true;
+        for (o of intersects)
+            if (o.object == iobj.obj)
+                flag = false;
+
+        if (flag) {
+            iobj.obj.material.color.setHex(iobj.color);
+            intersected.splice(intersected.indexOf(iobj),1);
+        }
+    }
+
+    for (o of intersects) {
+        const obj = o.object;
+        if (intersected.find(e => e.obj == obj) == undefined) {
+            let t = {obj: obj, color: obj.material.color.getHex()};
+            intersected.push(t);
+            obj.material.color.setHex( 0xff0000 );
+        }
+    }
+};
+
 function animate() {
-    requestAnimationFrame( animate );
+    updateHighlight();
     controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+    requestAnimationFrame( animate );
     render();
 }
 
