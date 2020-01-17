@@ -82,6 +82,7 @@ function updateVis(schedule) {
         }
 
         let curHeight, curWidth;
+        let readyToVis = false;
         // includes "for"
         for (line of block) {
             if (line.includes("tileable")) {
@@ -101,10 +102,21 @@ function updateVis(schedule) {
                 if (xory == 'y') {
                     const prev = prevSize[nestcount - 1][0];
                     curHeight = (range == 0) ? prev : (prev / range);
+
+                    // FIXME!!!
+                    // Handle one dimensional cases
+                    if (fname == "kernel") {
+                        curWidth = 1;
+                        readyToVis = true;
+                    }
                 } else if (xory == 'x') {
                     const prev = prevSize[nestcount - 1][1];
                     curWidth = (range == 0) ? prev : (prev / range);
+                    readyToVis = true;
+                }
 
+                if (readyToVis) {
+                    readyToVis = false;
                     // First to reach this nest level
                     if (prevSize.length == nestcount) {
                         prevSize.push([curHeight, curWidth]);
