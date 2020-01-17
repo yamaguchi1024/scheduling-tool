@@ -1,7 +1,8 @@
-let camera, controls, scene, renderer, raycaster, canvas;
+let camera, controls, scene, renderer, raycaster, canvas, font;
 let mouse = new THREE.Vector2();
-let meshAndFunc = [];
-let intersected = [];
+let meshAndFunc;
+let intersected;
+let cubes;
 
 init();
 animate();
@@ -13,6 +14,9 @@ function onMousemove(event) {
 };
 
 function init() {
+    intersected = [];
+    meshAndFunc = [];
+    cubes = [];
     canvas = document.getElementById('visualization');
 
     scene = new THREE.Scene();
@@ -53,6 +57,11 @@ function init() {
 
     raycaster = new THREE.Raycaster();
     document.addEventListener('mousemove', onMousemove);
+
+    const loader = new THREE.FontLoader();
+    loader.load('fonts/helvetiker_regular.typeface.json', function (r) {
+        font = r;
+    });
 }
 
 const imageWidth = 2560;
@@ -142,14 +151,34 @@ function updateVis(schedule) {
             opacity: 0.7,
         });
         const mesh = new THREE.Mesh(geometry, material);
+        const pos_y = -100 * (i - (sizes.length-1)/2);
         mesh.position.x = 0;
-        mesh.position.y = -100 * (i - (sizes.length-1)/2);
+        mesh.position.y = pos_y;
         mesh.position.z = 0;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
+        cubes.push(mesh);
         meshAndFunc.push({mesh: mesh, fname: funcs[i].name, index: funcs[i].index});
+
+        // Show text number
+        let textGeo = new THREE.TextGeometry(funcs[i].index.toString(), {
+            font: font,
+            size: 20,
+            height: 2
+        });
+        let textMaterial = new THREE.MeshBasicMaterial( {
+            color : 0x000000
+        });
+        let textMesh = new THREE.Mesh(textGeo, textMaterial);
+        textMesh.position.x = -10;
+        textMesh.position.y = pos_y - 10;
+        textMesh.position.z = -180;
+        textMesh.lookAt(camera.position);
+
+        scene.add(textMesh);
     }
+
     for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
         const len = 50;
@@ -163,7 +192,7 @@ function updateVis(schedule) {
 
 function updateHighlight() {
     raycaster.setFromCamera( mouse, camera );
-    const intersects = raycaster.intersectObjects( scene.children );
+    const intersects = raycaster.intersectObjects( cubes );
 
     for (iobj of intersected) {
         let flag = true;
