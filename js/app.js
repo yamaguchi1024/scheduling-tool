@@ -11,6 +11,7 @@ const path = require('path');
 let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
 let globalexec = execTest();
 let globalcolortable = {};
+let maxLineNum = 0;
 const colors = ["#D86334", "#023859", "#CA431E", "#DDCCC2", "#056C83"];
 
 ipcRenderer.on('fileopen', (event, str) => {
@@ -87,6 +88,7 @@ function execTest() {
             }
             else if (json.type == "phase1")
             {
+                maxLineNum = 0;
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
@@ -159,6 +161,16 @@ function execTest() {
                 document.getElementById("input").disabled = true;
                 funcid = node_attrs.find(v => v.label === json.func).id;
 
+                // Disable non-clickable scheduling buttons
+                const scheduleElements = document.getElementById("schedule").children;
+                for (let idx in scheduleElements) {
+                    if (scheduleElements[idx].children == undefined) continue;
+                    const button = scheduleElements[idx].children[0];
+                    if (idx > maxLineNum) {
+                        button.disabled = true;
+                    }
+                }
+
                 // Hide phase 1 items here
                 const suggest = document.getElementById("suggestion");
                 const nodes = suggest.children;
@@ -186,6 +198,7 @@ function execTest() {
                 const nodes = e.children;
                 for (let i in nodes) {
                     if (i != linenum) continue;
+                    maxLineNum = i;
                     const stage = nodes[i];
                     if (stage.children == undefined) continue;
                     const cost_div = stage.children[1];
