@@ -114,7 +114,7 @@ function execTest() {
                     button.onmouseout = function() {
                         button.style.backgroundColor = "#FFFFFF";
                     };
-                    button.setAttribute("style", "text-align: left");
+                    button.setAttribute("style", "text-align: left; font-family: monospace;");
                     let line = "(" + tilingarray[i] + ")";
                     button.innerHTML = line;
                     button.style.backgroundColor = "#FFFFFF";
@@ -292,11 +292,11 @@ function execTest() {
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
                     };
-                    button.setAttribute("style", "text-align: left; float: left;");
+                    button.setAttribute("style", "text-align: left; float: left; font-family: monospace;");
 
                     button.style.backgroundColor = buttonbackground;
 
-                    hontai.setAttribute("style", "text-align: left;");
+                    hontai.setAttribute("style", "text-align: left; font-family: monospace;");
 
                     const linecost = document.createElement("div");
                     linecost.setAttribute("style", "text-align: right; float: right;");
