@@ -1,6 +1,6 @@
 let camera, controls, scene, renderer, raycaster, canvas;
 let mouse = new THREE.Vector2();
-let rayRecieveObjects = [];
+let meshAndFunc = [];
 let intersected = [];
 
 init();
@@ -64,7 +64,6 @@ function updateVis(schedule) {
     init();
 
     let prevSize = [[imageHeight, imageWidth]];
-    // [y, x]
     let funcs = [];
     let sizes = [];
     for (let i = 0; i < schedule.length; i++) {
@@ -105,7 +104,7 @@ function updateVis(schedule) {
                         prevSize[nestcount] = [curHeight, curWidth];
                     }
                     sizes.push([curHeight, curWidth]);
-                    funcs.push(fname);
+                    funcs.push({name: fname, index: i});
                 }
             }
         }
@@ -137,7 +136,7 @@ function updateVis(schedule) {
         const size_x = Math.log(sx)*c;
         const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
         const material = new THREE.MeshPhongMaterial( {
-            color: globalcolortable[funcs[i]],
+            color: globalcolortable[funcs[i].name],
             flatShading: true,
             transparent: true,
             opacity: 0.7,
@@ -149,7 +148,7 @@ function updateVis(schedule) {
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
-        rayRecieveObjects.push(mesh);
+        meshAndFunc.push({mesh: mesh, fname: funcs[i].name, index: funcs[i].index});
     }
     for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
@@ -164,7 +163,7 @@ function updateVis(schedule) {
 
 function updateHighlight() {
     raycaster.setFromCamera( mouse, camera );
-    const intersects = raycaster.intersectObjects( rayRecieveObjects );
+    const intersects = raycaster.intersectObjects( scene.children );
 
     for (iobj of intersected) {
         let flag = true;
@@ -173,7 +172,8 @@ function updateHighlight() {
                 flag = false;
 
         if (flag) {
-            iobj.obj.material.color.setHex(iobj.color);
+            iobj.obj.material.color.setHex(iobj.visColor);
+            iobj.button.style.backgroundColor = iobj.scheColor;
             intersected.splice(intersected.indexOf(iobj),1);
         }
     }
@@ -181,9 +181,18 @@ function updateHighlight() {
     for (o of intersects) {
         const obj = o.object;
         if (intersected.find(e => e.obj == obj) == undefined) {
-            let t = {obj: obj, color: obj.material.color.getHex()};
-            intersected.push(t);
+            const prevColor = obj.material.color.getHex();
             obj.material.color.setHex( 0xff0000 );
+
+            // Which func is this?
+            const index = meshAndFunc.find(e => e.mesh ==  obj).index;
+            const e = document.getElementById("schedule");
+            const button = e.children[index].children[0]; //button
+            const prevButtonColor = button.style.backgroundColor;
+            button.style.backgroundColor = "#FF0000";
+
+            let t = {obj: obj, visColor: prevColor, button: button, scheColor: prevButtonColor};
+            intersected.push(t);
         }
     }
 };
