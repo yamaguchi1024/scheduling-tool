@@ -12,7 +12,7 @@ let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
 let globalexec = execTest();
 let globalcolortable = {};
 let maxLineNum = 0;
-const colors = ["#D86334", "#023859", "#CA431E", "#DDCCC2", "#056C83"];
+const colors = ["#884EA0", "#2471A3", "#2471A3", "#229954", "#229954", "#229954", "#34495E", "#A93226"];
 
 ipcRenderer.on('fileopen', (event, str) => {
     globalcolortable = {};
@@ -50,7 +50,7 @@ function execTest() {
                 for (let i = 0; i < json.nodes.length; i++) {
                     node_attrs[i] = {
                         id: i+1,
-                        label: json.nodes[i]
+                        label: json.nodes[i],
                     };
                 }
                 edge_attrs = new Array();
@@ -75,13 +75,18 @@ function execTest() {
                 };
 
                 let options = {
-                    layout: {
-                        hierarchical: {
-                            direction: "LR",
+                    edges: {
+                        color: {
+                            color: '#869AA6'
                         }
                     },
                     nodes: {
                         shape: 'box'
+                    },
+                    layout: {
+                        hierarchical: {
+                            direction: "LR",
+                        }
                     }
                 };
                 let network = new vis.Network(container, network_data, options);
@@ -93,6 +98,7 @@ function execTest() {
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
                 inst.innerHTML += " or type tiling size (y x)";
+                inst.setAttribute("style", "font-family: monospace;");
 
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
@@ -109,7 +115,7 @@ function execTest() {
                         document.getElementById('tile').classList.add('inactive');
                     };
                     button.onmouseover = function() {
-                        button.style.backgroundColor = "#FFDC00";
+                        button.style.backgroundColor = "#FFEF00";
                     };
                     button.onmouseout = function() {
                         button.style.backgroundColor = "#FFFFFF";
@@ -275,7 +281,7 @@ function execTest() {
                         globalcolortable[func] = colors[Object.keys(globalcolortable).length%(colors.length)];
 
                     let buttonbackground =
-                        buttonbackgroundchange ? globalcolortable[func] : "#00FF00";
+                        buttonbackgroundchange ? globalcolortable[func] : "#E60000";
 
                     button.innerHTML = index;
                     hontai.innerHTML = newline;
@@ -287,7 +293,7 @@ function execTest() {
                     let prevcolor;
                     button.onmouseover = function() {
                         prevcolor = button.style.backgroundColor;
-                        button.style.backgroundColor = "#FFDC00";
+                        button.style.backgroundColor = "#FFEF00";
                     };
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
@@ -312,6 +318,7 @@ function execTest() {
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
                 e.innerHTML = `Current Cost: <span style="color: #FF6666;">${json.contents}</span>, `;
+                e.setAttribute("style", "font-family: monospace;");
 
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
@@ -341,7 +348,7 @@ function execTest() {
                     globalexec.stdin.write("-1 -1\n");
                 };
                 undobutton.onmouseover = function() {
-                    undobutton.style.backgroundColor = "#FFDC00";
+                    undobutton.style.backgroundColor = "#FFEF00";
                 };
                 undobutton.onmouseout = function() {
                     undobutton.style.backgroundColor = "#FFFFFF";
@@ -355,7 +362,7 @@ function execTest() {
                     globalexec.stdin.write("-2 -2\n");
                 };
                 redobutton.onmouseover = function() {
-                    redobutton.style.backgroundColor = "#FFDC00";
+                    redobutton.style.backgroundColor = "#FFEF00";
                 };
                 redobutton.onmouseout = function() {
                     redobutton.style.backgroundColor = "#FFFFFF";
@@ -372,12 +379,12 @@ function execTest() {
         // Change color here
         for (let i = 0; i < nodes.length; i++) {
             let n = nodes.get(i+1);
-            n.color = "cyan";
+            n.color = '#6588A6';
             nodes.update(n);
         }
 
         let func = nodes.get(funcid);
-        func.color = "lime";
+        func.color = '#E60000';
         nodes.update(func);
     });
 

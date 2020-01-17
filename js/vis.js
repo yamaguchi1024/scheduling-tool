@@ -195,7 +195,7 @@ function updateVis(schedule) {
         const dir = new THREE.Vector3(0, -1, 0);
         const len = 50;
         const origin = new THREE.Vector3(0, -100 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
-        const arrow = new THREE.ArrowHelper(dir, origin, len, 0x00FFFF, 0.2 * len, 0.5 * len);
+        const arrow = new THREE.ArrowHelper(dir, origin, len, 0x869AA6, 0.2 * len, 0.5 * len);
         scene.add(arrow);
     }
 
@@ -223,14 +223,14 @@ function updateHighlight() {
         const obj = o.object;
         if (intersected.find(e => e.obj == obj) == undefined) {
             const prevColor = obj.material.color.getHex();
-            obj.material.color.setHex( 0xff0000 );
+            obj.material.color.setHex( 0xFFEF00 );
 
             // Which func is this?
             const index = meshAndFunc.find(e => e.mesh ==  obj).index;
             const e = document.getElementById("schedule");
             const button = e.children[index].children[0]; //button
             const prevButtonColor = button.style.backgroundColor;
-            button.style.backgroundColor = "#FF0000";
+            button.style.backgroundColor = "#FFEF00";
 
             let t = {obj: obj, visColor: prevColor, button: button, scheColor: prevButtonColor};
             intersected.push(t);
