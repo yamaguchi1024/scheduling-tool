@@ -226,11 +226,12 @@ function execTest() {
                 let functable = {};
                 e.innerHTML = "";
                 for (const idx in lines) {
-                    const index = "<span style=\"background-color: #FFFF00\">" + idx + "</span> ";
+                    let index = idx;
                     let newline = "";
                     let func;
 
                     const button = document.createElement("button");
+                    const hontai = document.createElement("div");
                     let buttonbackgroundchange = true;
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx];
@@ -247,9 +248,10 @@ function execTest() {
                         }
 
                         // parse line and identify this block
-                        curline += "<br>";
-                        if (iidx != 0)
-                            curline = "&nbsp;&nbsp;&nbsp;" + curline;
+                        if (iidx != lines[idx].length - 1) {
+                            curline += "<br>";
+                        }
+                        index += "<br>";
                         newline += curline;
                     }
 
@@ -262,7 +264,8 @@ function execTest() {
                     let buttonbackground =
                         buttonbackgroundchange ? globalcolortable[func] : "#00FF00";
 
-                    button.innerHTML += index + newline;
+                    button.innerHTML = index;
+                    hontai.innerHTML = newline;
 
                     button.onclick = function() {
                         globalexec.stdin.write(idx + " -1\n");
@@ -276,17 +279,20 @@ function execTest() {
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
                     };
-                    button.setAttribute("style", "text-align: left");
+                    button.setAttribute("style", "text-align: left; float: left;");
 
                     button.style.backgroundColor = buttonbackground;
+
+                    hontai.setAttribute("style", "text-align: left;");
 
                     const linecost = document.createElement("div");
                     linecost.setAttribute("style", "text-align: right; float: right;");
                     linecost.setAttribute("id", "linecost");
 
                     const div = document.createElement("div");
-                    div.setAttribute("style", "padding: 0; margin: 0px;");
+                    div.setAttribute("style", "padding: 3px; margin: 0px;");
                     div.appendChild(button);
+                    div.appendChild(hontai);
                     div.appendChild(linecost);
                     e.appendChild(div);
                 }
