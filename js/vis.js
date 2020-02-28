@@ -163,7 +163,7 @@ function updateVis(schedule) {
             opacity: 0.7,
         });
         const mesh = new THREE.Mesh(geometry, material);
-        const pos_y = -100 * (i - (sizes.length-1)/2);
+        const pos_y = -40 * (i - (sizes.length-1)/2);
         mesh.position.x = 0;
         mesh.position.y = pos_y;
         mesh.position.z = 0;
@@ -193,8 +193,8 @@ function updateVis(schedule) {
 
     for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
-        const len = 50;
-        const origin = new THREE.Vector3(0, -100 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
+        const len = 10;
+        const origin = new THREE.Vector3(0, -40 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
         const arrow = new THREE.ArrowHelper(dir, origin, len, 0x869AA6, 0.2 * len, 0.5 * len);
         scene.add(arrow);
     }
