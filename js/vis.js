@@ -29,12 +29,14 @@ function init() {
     const {width, height} = canvas.parentNode.getBoundingClientRect();
     renderer.setSize(width, height);
 
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight);
-    camera.position.set( 400, 0, 0 );
+    //camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight);
+    camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+    camera.position.set( 400, 40, 60 );
 
     // controls
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls.enabled = false;
 
     // lights
 
@@ -160,7 +162,7 @@ function updateVis(schedule) {
             color: globalcolortable[funcs[i].name],
             flatShading: true,
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.9,
         });
         const mesh = new THREE.Mesh(geometry, material);
         const pos_y = -40 * (i - (sizes.length-1)/2);
@@ -169,6 +171,12 @@ function updateVis(schedule) {
         mesh.position.z = 0;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
+
+        let egeo = new THREE.EdgesGeometry(geometry);
+        var emat = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1 } );
+        var edges = new THREE.LineSegments( egeo, emat );
+        mesh.add( edges );
+
         scene.add( mesh );
         cubes.push(mesh);
         meshAndFunc.push({mesh: mesh, fname: funcs[i].name, index: funcs[i].index});
