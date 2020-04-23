@@ -306,7 +306,7 @@ function execTest() {
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
                     };
-                    button.setAttribute("style", "text-align: left; float: left; font-family: monospace;");
+                    button.setAttribute("style", "color: #FFFFFF; text-align: left; float: left; font-family: monospace;");
 
                     button.style.backgroundColor = buttonbackground;
 
