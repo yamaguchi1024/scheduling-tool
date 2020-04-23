@@ -30,7 +30,7 @@ function init() {
     renderer.setSize(width, height);
 
     //camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight);
-    camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+    camera = new THREE.OrthographicCamera( width / - 1.5, width / 1.5, height / 1.5, height / - 1.5, 1, 1000 );
     camera.position.set( 400, 40, 60 );
 
     // controls
@@ -185,16 +185,16 @@ function updateVis(schedule) {
         let textGeo = new THREE.TextGeometry(funcs[i].index.toString(), {
             font: font,
             size: 20,
-            height: 2
+            height: 1
         });
         let textMaterial = new THREE.MeshBasicMaterial( {
-            color : 0x000000
+            color : 0x333333
         });
         let textMesh = new THREE.Mesh(textGeo, textMaterial);
         textMesh.position.x = -10;
         textMesh.position.y = pos_y - 10;
-        textMesh.position.z = -180;
-        textMesh.lookAt(camera.position);
+        textMesh.position.z = 250;
+        textMesh.lookAt(new THREE.Vector3(0, pos_y - 10, 250));
 
         scene.add(textMesh);
     }
