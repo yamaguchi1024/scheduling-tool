@@ -107,7 +107,7 @@ function execTest() {
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
                 inst.innerHTML += " or type tiling size (y x).";
-                inst.setAttribute("style", "font-family: monospace;");
+                inst.setAttribute("style", "font-family: monospace; text-decoration: underline;");
 
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
