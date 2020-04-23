@@ -106,7 +106,7 @@ function execTest() {
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
-                inst.innerHTML += " or type tiling size (y x)";
+                inst.innerHTML += " or type tiling size (y x).";
                 inst.setAttribute("style", "font-family: monospace;");
 
                 const suggest = document.getElementById("suggestion");
