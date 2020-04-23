@@ -81,7 +81,8 @@ function execTest() {
                         }
                     },
                     nodes: {
-                        shape: 'box'
+                        shape: 'box',
+                        font: {color: 'white'}
                     },
                     layout: {
                         hierarchical: {
