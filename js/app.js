@@ -137,7 +137,7 @@ function execTest() {
                     const cdiv = document.createElement("div");
                     const rdiv = document.createElement("div");
                     cdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 6px;");
-                    cdiv.innerHTML =  costarray[i];
+                    cdiv.innerHTML =  '<span style="color: black; font-family: monospace;">Cost: </span>' + costarray[i];
                     rdiv.innerHTML =  parseFloat(runtimearray[i]).toFixed(3) + "ms";
                     rdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
                     rdiv.style.color = "#3189e8";
@@ -150,10 +150,10 @@ function execTest() {
                     c.innerHTML +=  "<br> compute cost: " + computecostarray[i];
 
                     cdiv.onmouseover = function() {
-                        cdiv.children[0].style.display = 'block';
+                        cdiv.children[1].style.display = 'block';
                     };
                     cdiv.onmouseout = function() {
-                        cdiv.children[0].style.display = 'none';
+                        cdiv.children[1].style.display = 'none';
                     };
 
                     cdiv.appendChild(c);
@@ -162,7 +162,7 @@ function execTest() {
                     const div = document.createElement("div");
                     div.setAttribute("style", "padding: 0; margin: 0px;");
                     div.appendChild(button);
-                    div.appendChild(rdiv);
+                    //div.appendChild(rdiv);
                     div.appendChild(cdiv);
                     suggest.appendChild(div);
                 }
@@ -224,24 +224,24 @@ function execTest() {
                     rdiv.setAttribute("style", "text-align: right; float: right; height: 25px;");
                     rdiv.style.color = "#3189e8";
 
-                    cdiv.innerHTML = line_cost;
+                    cdiv.innerHTML =  '<span style="color: black; font-family: monospace;">Cost: </span>' + line_cost;
                     rdiv.innerHTML = parseFloat(runtime).toFixed(3) + "ms";
 
                     const c = document.createElement("div");
-                    c.setAttribute("style", "left: 50px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: relative; z-index: 1; border: 1px solid black; color: black");
+                    c.setAttribute("style", "left: 10px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: relative; z-index: 1; border: 1px solid black; color: black");
                     c.innerHTML +=  "load cost: " + load_cost;
                     c.innerHTML +=  "<br> store cost: " + store_cost;
                     c.innerHTML +=  "<br> compute cost: " + compute_cost;
 
                     cdiv.onmouseover = function() {
-                        cdiv.children[0].style.display = 'block';
+                        cdiv.children[1].style.display = 'block';
                     };
                     cdiv.onmouseout = function() {
-                        cdiv.children[0].style.display = 'none';
+                        cdiv.children[1].style.display = 'none';
                     };
 
                     cdiv.appendChild(c);
-                    cost_div.appendChild(rdiv);
+                    //cost_div.appendChild(rdiv);
                     cost_div.appendChild(cdiv);
                 }
             }else if (json.type == "schedule")
@@ -341,6 +341,7 @@ function execTest() {
                 e.setAttribute("style", "font-family: monospace;");
                 e.appendChild(document.createTextNode('Current Cost: '));
                 e.appendChild(span);
+                e.appendChild(document.createTextNode(' '));
 
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
@@ -357,13 +358,12 @@ function execTest() {
             } else if (json.type == "realize" ) {
                 const e = document.getElementById("cost");
 
-                e.appendChild(document.createTextNode(', Run Time: '));
+                //e.appendChild(document.createTextNode(', Run Time: '));
 
-                const span = document.createElement('span');
-                span.setAttribute('style', "color: #3189e8;");
-                span.innerText = `${json.contents.toFixed(3)}ms`;
-
-                e.appendChild(span);
+                //const span = document.createElement('span');
+                //span.setAttribute('style', "color: #3189e8;");
+                //span.innerText = `${json.contents.toFixed(3)}ms`;
+                //e.appendChild(span);
 
                 const undobutton = document.createElement("button");
                 undobutton.onclick = function() {
