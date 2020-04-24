@@ -8,7 +8,7 @@ const fs = require('fs');
 const vis = require('vis');
 const path = require('path');
 
-let filename = "/home/yuka/Halide/apps/scheduling-tool/test/simple_test.cpp";
+let filename = "/home/yuka/Halide/apps/scheduling-tool/test/unsharp_mask.cpp";
 let globalexec = execTest();
 let globalcolortable = {};
 let maxLineNum = 0;
@@ -228,7 +228,7 @@ function execTest() {
                     rdiv.innerHTML = parseFloat(runtime).toFixed(3) + "ms";
 
                     const c = document.createElement("div");
-                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid black; color: black");
+                    c.setAttribute("style", "left: 50px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: relative; z-index: 1; border: 1px solid black; color: black");
                     c.innerHTML +=  "load cost: " + load_cost;
                     c.innerHTML +=  "<br> store cost: " + store_cost;
                     c.innerHTML +=  "<br> compute cost: " + compute_cost;
@@ -326,8 +326,20 @@ function execTest() {
                 }
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
-                e.innerHTML = `Current Cost: <span style="color: #FF6666;">${json.contents}</span>, `;
+
+                const span = document.createElement("span");
+                span.onmouseover = function() {
+                    document.getElementById('popup').style.display = 'block';
+                };
+                span.onmouseout = function() {
+                    document.getElementById('popup').style.display = 'none';
+                };
+                span.innerText = json.contents;
+                span.setAttribute("style", "color: #FF6666;");
+
                 e.setAttribute("style", "font-family: monospace;");
+                e.appendChild(document.createTextNode('Current Cost: '));
+                e.appendChild(span);
 
                 const load_cost = json.load_costs;
                 const store_cost = json.store_costs;
@@ -335,22 +347,22 @@ function execTest() {
 
                 const c = document.createElement("div");
                 c.setAttribute("id", "popup");
-                c.setAttribute("style", "display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
+                c.setAttribute("style", "bottom: 28px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
                 c.innerHTML += "load cost: " + load_cost;
                 c.innerHTML += "<br>store cost: " + store_cost;
                 c.innerHTML += "<br>compute cost: " + compute_cost;
 
-                e.onmouseover = function() {
-                    document.getElementById('popup').style.display = 'block';
-                };
-                e.onmouseout = function() {
-                    document.getElementById('popup').style.display = 'none';
-                };
-
                 e.appendChild(c);
             } else if (json.type == "realize" ) {
                 const e = document.getElementById("cost");
-                e.innerHTML += `Run Time: <span style="color: #3189e8;">${json.contents.toFixed(3)}ms</span> `;
+
+                e.appendChild(document.createTextNode(', Run Time: '));
+
+                const span = document.createElement('span');
+                span.setAttribute('style', "color: #3189e8;");
+                span.innerText = `${json.contents.toFixed(3)}ms`;
+
+                e.appendChild(span);
 
                 const undobutton = document.createElement("button");
                 undobutton.onclick = function() {
