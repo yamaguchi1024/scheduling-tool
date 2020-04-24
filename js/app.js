@@ -326,6 +326,7 @@ function execTest() {
                 }
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
+                e.innerHTML = "";
 
                 const span = document.createElement("span");
                 span.onmouseover = function() {
