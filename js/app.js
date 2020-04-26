@@ -428,4 +428,5 @@ function inputListener(e) {
     const input = e.target.value;
     e.target.value = '';
     globalexec.stdin.write(input + "\n");
+    document.getElementById('tile').classList.add('inactive');
 };
