@@ -12,7 +12,7 @@ let filename = "/home/yuka/Halide/apps/scheduling-tool/test/unsharp_mask.cpp";
 let globalexec = execTest();
 let globalcolortable = {};
 let maxLineNum = 0;
-const colors = ["#884EA0", "#2471A3", "#2471A3", "#229954", "#229954", "#229954", "#34495E", "#A93226"];
+const colors = ["#884EA0", "#34495e", "#2471A3", "#172396", "#229954", "#65853c", "#96591b", "#a31e00"];
 
 ipcRenderer.on('fileopen', (event, str) => {
     globalcolortable = {};
