@@ -248,7 +248,6 @@ function execTest() {
             {
                 const e = document.getElementById("schedule");
                 const lines = json.contents;
-                updateVis(lines);
                 const phase = parseInt(json.phase);
                 const curfunc = json.func;
                 let functable = {};
@@ -324,6 +323,8 @@ function execTest() {
                     div.appendChild(linecost);
                     e.appendChild(div);
                 }
+
+                updateVis(lines);
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
                 e.innerHTML = "";
