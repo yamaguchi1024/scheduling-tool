@@ -302,9 +302,13 @@ function execTest() {
                     button.onmouseover = function() {
                         prevcolor = button.style.backgroundColor;
                         button.style.backgroundColor = "#FFEF00";
+
+                        updateHighlightFromSchedule(parseInt(idx));
                     };
                     button.onmouseout = function() {
                         button.style.backgroundColor = prevcolor;
+
+                        restoreHighlightFromSchedule(parseInt(idx));
                     };
                     button.setAttribute("style", "color: #FFFFFF; text-align: left; float: left; font-family: monospace;");
 

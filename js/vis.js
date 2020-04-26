@@ -246,6 +246,22 @@ function updateHighlight() {
     }
 };
 
+let prevBlockColor;
+function updateHighlightFromSchedule(index) {
+    const block = meshAndFunc.find(({index: idx}) => idx == index);
+    if (block == undefined) return;
+    const mesh = block.mesh;
+    prevBlockColor = mesh.material.color.getHex();
+    mesh.material.color.setHex( 0xFFEF00 );
+};
+
+function restoreHighlightFromSchedule(index) {
+    const block = meshAndFunc.find(({index: idx}) => idx == index);
+    if (block == undefined) return;
+    const mesh = block.mesh;
+    mesh.material.color.setHex( prevBlockColor );
+};
+
 function animate() {
     updateHighlight();
     controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
