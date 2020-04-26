@@ -161,7 +161,7 @@ function updateVis(schedule) {
         const material = new THREE.MeshPhongMaterial( {
             color: globalcolortable[funcs[i].name],
             flatShading: true,
-            transparent: true,
+            transparent: false,
             opacity: 0.9,
         });
         const mesh = new THREE.Mesh(geometry, material);
