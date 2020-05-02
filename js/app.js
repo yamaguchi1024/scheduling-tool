@@ -65,6 +65,8 @@ function execTest() {
                         }
                     }
                 }
+                node_attrs.find(v => v.label === "lambda_0").label = "input";
+                node_attrs.find(v => v.label === "repeat_edge").label = "bounded";
 
                 nodes = new vis.DataSet(node_attrs);
                 edges = new vis.DataSet(edge_attrs);
@@ -77,12 +79,17 @@ function execTest() {
                 let options = {
                     edges: {
                         color: {
-                            color: '#869AA6'
+                            color: '#000000'
                         }
                     },
                     nodes: {
                         shape: 'box',
-                        font: {color: 'white'}
+                        font: {
+                            color: 'black',
+                            size: 24,
+                            face: 'monospace',
+                        },
+                        margin: 10
                     },
                     layout: {
                         hierarchical: {
@@ -106,7 +113,6 @@ function execTest() {
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
-                inst.innerHTML += " or type tiling size (y x).";
                 inst.setAttribute("style", "font-family: monospace; text-decoration: underline;");
 
                 const suggest = document.getElementById("suggestion");
@@ -281,6 +287,7 @@ function execTest() {
                         index += "<br>";
                         newline += curline;
                     }
+                    if (idx == 0) func = "top";
 
                     if (func in functable) functable[func].push(parseInt(idx));
                     else  functable[func] = [parseInt(idx)];
@@ -406,12 +413,25 @@ function execTest() {
         // Change color here
         for (let i = 0; i < nodes.length; i++) {
             let n = nodes.get(i+1);
-            n.color = '#6588A6';
+            n.color = {
+                background: 'white',
+                border: 'black'
+            };
+            n.font = {
+                        color: 'black',
+                        size: 24,
+                        face: 'monospace',
+            };
             nodes.update(n);
         }
 
         let func = nodes.get(funcid);
         func.color = '#E60000';
+        func.font = {
+                    color: 'white',
+                    size: 24,
+                    face: 'monospace',
+        };
         nodes.update(func);
     });
 

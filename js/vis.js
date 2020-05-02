@@ -80,7 +80,11 @@ function updateVis(schedule) {
     for (let i = 0; i < schedule.length; i++) {
         let block = schedule[i];
         for (line in block) {
-            if (!line.includes("for")) continue;
+            if (!line.includes("for") && i == 0) {
+                sizes.push([imageHeight, imageWidth]);
+                funcs.push({name: "top", index: 0});
+                break;
+            }
         }
 
         let curHeight, curWidth;
@@ -100,21 +104,21 @@ function updateVis(schedule) {
                 const min = 0;
                 const max = m[3];
 
-                const range = max - min;
+                const range = max - min + 1;
                 if (xory == 'y') {
                     const prev = prevSize[nestcount - 1][0];
                     curHeight = (range == 0) ? prev : (prev / range);
+                    readyToVis = true;
+                } else if (xory == 'x') {
+                    const prev = prevSize[nestcount - 1][1];
+                    curWidth = (range == 0) ? prev : (prev / range);
 
                     // FIXME!!!
                     // Handle one dimensional cases
                     if (fname == "kernel") {
-                        curWidth = 1;
+                        curHeight = 1;
                         readyToVis = true;
                     }
-                } else if (xory == 'x') {
-                    const prev = prevSize[nestcount - 1][1];
-                    curWidth = (range == 0) ? prev : (prev / range);
-                    readyToVis = true;
                 }
 
                 if (readyToVis) {
@@ -152,12 +156,12 @@ function updateVis(schedule) {
 
     // world
     for (i in sizes) {
-        let sy = sizes[i][0];
-        let sx = sizes[i][1];
+        let sy = Math.max(sizes[i][0], 1);
+        let sx = Math.max(sizes[i][1], 1);
         const c = 50;
-        const size_y = Math.log(sy)*c;
-        const size_x = Math.log(sx)*c;
-        const geometry = new THREE.BoxGeometry(size_x, 10, size_y);
+        const size_y = Math.max(Math.log(sy)*c, 5);
+        const size_x = Math.max(Math.log(sx)*c, 5);
+        const geometry = new THREE.BoxGeometry(size_y, 10, size_x);
         const material = new THREE.MeshPhongMaterial( {
             color: globalcolortable[funcs[i].name],
             flatShading: true,
@@ -165,7 +169,7 @@ function updateVis(schedule) {
             opacity: 0.9,
         });
         const mesh = new THREE.Mesh(geometry, material);
-        const pos_y = -40 * (i - (sizes.length-1)/2);
+        const pos_y = -42 * (i - (sizes.length-1)/2);
         mesh.position.x = 0;
         mesh.position.y = pos_y;
         mesh.position.z = 0;
@@ -202,7 +206,7 @@ function updateVis(schedule) {
     for(let i=0; i<sizes.length+1; i++) {
         const dir = new THREE.Vector3(0, -1, 0);
         const len = 10;
-        const origin = new THREE.Vector3(0, -40 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
+        const origin = new THREE.Vector3(0, -42 * (i - (sizes.length-1)/2 - 1/2) + len/2, 0);
         const arrow = new THREE.ArrowHelper(dir, origin, len, 0x869AA6, 0.2 * len, 0.5 * len);
         scene.add(arrow);
     }
