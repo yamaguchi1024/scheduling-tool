@@ -272,6 +272,21 @@ function execTest() {
                         if (fname != null) {
                             curline = curline.replace(fname,'');
                             func = fname[0].slice(1,-1);
+
+                            /*
+                            if (line.includes("for")) {
+                                const nestcount = (line.match(/&nbsp;/g) || []).length / 4;
+                                const l = line.replace('&nbsp;', ' ');
+                                let regexp = /for[ ]+(.+)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
+                                let m = l.match(regexp);
+                                const fname = m[1];
+                                const xory = m[2];
+                                const min = 0;
+                                const max = m[3];
+
+                                const range = max - min + 1;
+                            }
+                            */
                         }
 
                         // tilable?
@@ -335,7 +350,14 @@ function execTest() {
                     e.appendChild(div);
                 }
 
-                updateVis(lines);
+                let segments = [
+                    [-1, 1, 1, "source"],
+                    [0, 4, 60, "parallel"],
+                    [1, 21, 27, ""],
+                    [2, 32, 1, "vectorize"],
+                    [1, 80, 27, ""],
+                    [4, 8, 1, "vectorize"]];
+                draw(segments);
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
                 e.innerHTML = "";
@@ -418,9 +440,9 @@ function execTest() {
                 border: 'black'
             };
             n.font = {
-                        color: 'black',
-                        size: 24,
-                        face: 'monospace',
+                color: 'black',
+                size: 24,
+                face: 'monospace',
             };
             nodes.update(n);
         }
@@ -428,9 +450,9 @@ function execTest() {
         let func = nodes.get(funcid);
         func.color = '#E60000';
         func.font = {
-                    color: 'white',
-                    size: 24,
-                    face: 'monospace',
+            color: 'white',
+            size: 24,
+            face: 'monospace',
         };
         nodes.update(func);
     });

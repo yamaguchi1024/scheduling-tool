@@ -5,19 +5,8 @@ window.onload = function () {
 
 const fontsmall = "12px";
 const fontbig = "15px";
-// let image_width = 2400;
-// let image_height = 1600;
-// let segments = [[2, 146], [41, 11], [32, 1]];
 let image_width = 240;
 let image_height = 160;
-let segments = [
-	[-1, 1, 1, "source"],
-	[0, 4, 60, "parallel"],
-	[1, 21, 27, ""],
-	[2, 32, 1, "vectorize"],
-	[1, 80, 27, ""],
-	[4, 8, 1, "vectorize"]];
-
 let segment_height = 25;
 let segment_x = 500; // 1150
 
@@ -28,7 +17,7 @@ let outlets = [];
 
 let snap;
 
-function draw() {
+function draw(segments) {
 
 	snap = Snap("#svg");
 	
