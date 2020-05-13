@@ -257,6 +257,11 @@ function execTest() {
                 const phase = parseInt(json.phase);
                 const curfunc = json.func;
                 let functable = {};
+                const latestSeg = {};
+                latestSeg[0] = 0;
+                const parentSeg = {};
+                const segments = new Array(lines.length);
+                segments[0] = [-1, 1, 1, "source"];
                 e.innerHTML = "";
                 for (const idx in lines) {
                     let index = idx;
@@ -268,25 +273,30 @@ function execTest() {
                     let buttonbackgroundchange = true;
                     for (const iidx in lines[idx]) {
                         let curline = lines[idx][iidx];
+
+                        if (curline.includes("for")) {
+                            const nestcount = (curline.match(/&nbsp;/g) || []).length / 4;
+                            const l = curline.replace('&nbsp;', ' ');
+                            let regexp = /for[ ]+(.+)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
+                            let m = l.match(regexp);
+                            const fname = m[1];
+                            const xory = m[2];
+                            const min = 0;
+                            const max = m[3];
+                            const range = max - min + 1;
+
+                            latestSeg[nestcount] = parseInt(idx);
+                            parentSeg[idx] = latestSeg[nestcount - 1];
+                            if (xory == "x")
+                                segments[idx] = [parentSeg[idx], range, -1, ""];
+                            if (xory == "y")
+                                segments[idx][2] = range;
+                        }
+
                         let fname = curline.match(/[?].*[?]/);
                         if (fname != null) {
                             curline = curline.replace(fname,'');
                             func = fname[0].slice(1,-1);
-
-                            /*
-                            if (line.includes("for")) {
-                                const nestcount = (line.match(/&nbsp;/g) || []).length / 4;
-                                const l = line.replace('&nbsp;', ' ');
-                                let regexp = /for[ ]+(.+)\.(.)[ ]+in[ ]+0\.\.([0-9]+)/;
-                                let m = l.match(regexp);
-                                const fname = m[1];
-                                const xory = m[2];
-                                const min = 0;
-                                const max = m[3];
-
-                                const range = max - min + 1;
-                            }
-                            */
                         }
 
                         // tilable?
@@ -350,13 +360,7 @@ function execTest() {
                     e.appendChild(div);
                 }
 
-                let segments = [
-                    [-1, 1, 1, "source"],
-                    [0, 4, 60, "parallel"],
-                    [1, 21, 27, ""],
-                    [2, 32, 1, "vectorize"],
-                    [1, 80, 27, ""],
-                    [4, 8, 1, "vectorize"]];
+                console.log(segments);
                 draw(segments);
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");
