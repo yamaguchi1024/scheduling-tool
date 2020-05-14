@@ -288,7 +288,7 @@ function execTest() {
                             latestSeg[nestcount] = parseInt(idx);
                             parentSeg[idx] = latestSeg[nestcount - 1];
                             if (xory == "x")
-                                segments[idx] = [parentSeg[idx], range, 1, ""];
+                                segments[idx] = [parentSeg[idx], range, -1, ""];
                             if (xory == "y")
                                 segments[idx][2] = range;
                         }
