@@ -1,14 +1,13 @@
-
 window.onload = function () {
 	draw();
 }
 
 const fontsmall = "12px";
 const fontbig = "15px";
-let image_width = 240;
-let image_height = 160;
+let image_width = 2560;
+let image_height = 1600;
 let segment_height = 25;
-let segment_x = 500; // 1150
+let segment_x = 510; // 1150
 
 let p0;
 let p1;
@@ -16,7 +15,6 @@ let p1;
 let snap;
 
 function draw(segments) {
-
 	snap = Snap("#svg");
 	
 	snap.clear();
@@ -35,8 +33,8 @@ function draw(segments) {
 		let width = widths[parent+1];
 		let height = heights[parent+1];
 
-		let box_width = (1 + 0.5*Math.log(width)) * 140 / 2;
-		let box_height = (1 + 0.5* Math.log(height)) * 40 / 2;
+		let box_width = (1 + 0.5*Math.log(width)) * 140 / 2.5;
+		let box_height = (1 + 0.5* Math.log(height)) * 40 / 2.5;
 
 		let parent_outlet = null;
 		if (parent != -1) 
