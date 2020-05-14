@@ -65,7 +65,7 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
 	let y1 = y_offset + height;
 	let dx = height * 2;	
 
-
+    document.getElementById("svg").setAttribute("height", Math.max(parseInt(document.getElementById("svg").getAttribute("height")), y1 + 50));
 	draw_subbox(snap, x0, x1, y0, y1, dx, "#FFFFFF", "#000000")
 	//console.log("" + parent_outlet);
 	if (parent_outlet != null) {
