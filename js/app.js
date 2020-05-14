@@ -288,7 +288,7 @@ function execTest() {
                             latestSeg[nestcount] = parseInt(idx);
                             parentSeg[idx] = latestSeg[nestcount - 1];
                             if (xory == "x")
-                                segments[idx] = [parentSeg[idx], range, -1, ""];
+                                segments[idx] = [parentSeg[idx], range, 1, ""];
                             if (xory == "y")
                                 segments[idx][2] = range;
                         }
@@ -360,7 +360,6 @@ function execTest() {
                     e.appendChild(div);
                 }
 
-                console.log(segments);
                 draw(segments);
             } else if (json.type == "cost") {
                 const e = document.getElementById("cost");

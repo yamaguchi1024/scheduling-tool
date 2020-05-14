@@ -13,8 +13,6 @@ let segment_x = 500; // 1150
 let p0;
 let p1;
 
-let outlets = [];
-
 let snap;
 
 function draw(segments) {
@@ -26,6 +24,7 @@ function draw(segments) {
 	let widths = [image_width];
 	let heights = [image_height];
 	let y0 = 50;
+    let outlets = [];
 
 	for (let i = 0; i < segments.length; i++){
 
@@ -43,7 +42,7 @@ function draw(segments) {
 		if (parent != -1) 
 			parent_outlet = outlets[parent];
 		
-		draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3] );
+		draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], outlets);
 
 		y0 = y0 + box_height + 50;
 
@@ -55,7 +54,7 @@ function draw(segments) {
 
 
 }
-function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label ) {
+function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label, outlets) {
 
 	x_offset = x_offset - width;
 
@@ -66,9 +65,9 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
 	let dx = height * 2;	
 
     document.getElementById("svg").setAttribute("height", Math.max(parseInt(document.getElementById("svg").getAttribute("height")), y1 + 50));
-	draw_subbox(snap, x0, x1, y0, y1, dx, "#FFFFFF", "#000000")
-	//console.log("" + parent_outlet);
+	draw_subbox(snap, x0, x1, y0, y1, dx, "#FFFFFF", "#000000");
 	if (parent_outlet != null) {
+        console.log(parent_outlet);
 		snap.line(parent_outlet[0], parent_outlet[1], parent_outlet[0], (y0 + y1) / 2).attr({ fill: "none", stroke: "#FF0000" });
 		draw_arrow(parent_outlet[0], (y0 + y1) / 2, x0 - dx/2-30, (y0 + y1) / 2);
 	}
@@ -76,15 +75,11 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
 	let next_data_width =  Math.ceil(data_width / x_range);
 	let next_data_height =  Math.ceil(data_height / y_range);
 
-	// let x_label = '' + data_width + '/' + x_range + "=" + next_data_width;
-	// let y_label = '' + data_height + '/' + y_range + "=" + next_data_height;
 	let x_label =  '0..' + (x_range-1);
 	let y_label = '0..' + (y_range-1);
 
 	snap.text( (x0 + x1)/2-20, y0-6, x_label).attr({fontSize: fontsmall});
 	snap.text(x1-dx/2, y0 + height / 2 +20 , y_label).attr({fontSize: fontsmall});
-
-
 
 	if (y_range > height/4)
 		y_range = height/4;
@@ -107,22 +102,22 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
 				p0 = [(_x0+_x1)/2, _y0];
 				p1 = [_x1, _y1];
 
-				outlets.push([_x0 -_dx, _y1+30]);
+                outlets.push([_x0 -_dx, _y1+30]);
 
 				snap.text( _x0- _dx, _y1+22, ""+next_data_width+"x"+next_data_height).attr(
 					{fontSize: fontsmall});
-			
 			}
 			draw_subbox(snap, _x0, _x1, _y0, _y1, _dx, fill_color, stroke_color);
 		}
 	};
 	
-	let d = 2;
+	let d = 1;
 	snap.text( (x0 + x1)/2-dx/2-60+d, (y0+y1)/2+10+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
 	snap.text( (x0 + x1)/2-dx/2-60-d, (y0+y1)/2+10+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
 	snap.text( (x0 + x1)/2-dx/2-60-d, (y0+y1)/2+10-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
 	snap.text( (x0 + x1)/2-dx/2-60+d, (y0+y1)/2+10-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
 	snap.text( (x0 + x1)/2-dx/2-60, (y0+y1)/2+10, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#000000",});
+
 	//snap.text( (x0 + x1)/2-dx/2-40, (y0+y1)/2+10, "parallel").attr({fontSize:"30px"});
 	/*
 	p0 = [
@@ -150,5 +145,4 @@ function draw_arrow(x0, y0, x1, y1) {
 	let r = 10;
 	snap.line(x1-r, y1-r, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
 	snap.line(x1-r, y1+r, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
-
 }
