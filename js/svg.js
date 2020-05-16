@@ -44,7 +44,7 @@ function draw(segments) {
 
         draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], segments[i][4], outlets, i);
 
-        y0 = y0 + box_height + 40;
+        y0 = y0 + box_height + 42;
 
         widths.push(Math.ceil(width / x_range));
         heights.push(Math.ceil(height / y_range));
@@ -100,6 +100,8 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
                 outlets.push([_x0 -_dx -30, _y1+10]);
 
                 snap.text( _x0-_dx-20, _y1+15, "#" + segnum).attr(
+                    {fontSize: fontsmall, fill: globalcolortable[funcname], fontWeight: "bold"});
+                snap.text( _x0-_dx-20, _y1+26, funcname).attr(
                     {fontSize: fontsmall, fill: globalcolortable[funcname], fontWeight: "bold"});
             }
             draw_subbox(snap, _x0, _x1, _y0, _y1, _dx, fill_color, stroke_color);
