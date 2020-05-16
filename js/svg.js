@@ -9,14 +9,10 @@ let image_height = 1600;
 let segment_height = 25;
 let segment_x = 510; // 1150
 
-let p0;
-let p1;
-
 let snap;
 
 function draw(segments) {
     snap = Snap("#svg");
-
     snap.clear();
 
     let widths = [image_width];
@@ -100,9 +96,6 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
             if (x == 0 && y == Math.ceil(y_range-1)) {
                 fill_color = "#FF8888";
                 stroke_color = "#FF0000";
-
-                p0 = [(_x0+_x1)/2, _y0];
-                p1 = [_x1, _y1];
 
                 outlets.push([_x0 -_dx -30, _y1+10]);
 
