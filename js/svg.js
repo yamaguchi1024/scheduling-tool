@@ -51,8 +51,6 @@ function draw(segments) {
 
         y0 = y0 + box_height + 50;
 
-        //console.log("" + outlets[i]);
-
         widths.push(Math.ceil(width / x_range));
         heights.push(Math.ceil(height / y_range));
     }
@@ -121,27 +119,10 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
     snap.text( (x0 + x1)/2-dx/2-35-d, (y0+y1)/2+5-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
     snap.text( (x0 + x1)/2-dx/2-35+d, (y0+y1)/2+5-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
     snap.text( (x0 + x1)/2-dx/2-35, (y0+y1)/2+5, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#000000",});
-
-    //snap.text( (x0 + x1)/2-dx/2-40, (y0+y1)/2+10, "parallel").attr({fontSize:"30px"});
-    /*
-    p0 = [
-        x0  + dx * (y_range-1) / y_range,
-        y0 + height * (y_range-1) / y_range
-    ];
-    p1 = [
-        x0  + width * 1 / x_range  + dx * (y_range) / y_range,
-        y0 + height * (y_range) / y_range
-    ];
-    */
 }
 function draw_subbox(snap, x0, x1, y0, y1, dx, fill_color, stroke_color) {
     let points = [x0, y0, x1, y0, x1 - dx, y1, x0 - dx, y1];
     snap.polygon(points).attr({ fill: fill_color, stroke: stroke_color});
-    //snap.line(x0, y0, x1, y0).attr({ fill: "none", stroke: "#000000",  opacity: "0.5" });
-    //snap.line(x1, y0, x1-dx, y1).attr({ fill: "none", stroke: "#000000" ,  opacity: "0.5" });
-    //snap.line(x1-dx, y1, x0-dx, y1).attr({ fill: "none", stroke: "#000000",  opacity: "0.5"  });
-    //snap.line(x0-dx, y1, x0, y0).attr({ fill: "none", stroke: "#000000",  opacity: "0.5"  });
-
 }
 function draw_arrow(x0, y0, x1, y1) {
     snap.line(x0, y0, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
