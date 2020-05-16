@@ -6,7 +6,6 @@ const fontsmall = "12px";
 const fontbig = "14px";
 let image_width = 2560;
 let image_height = 1600;
-let segment_height = 25;
 let segment_x = 510; // 1150
 
 let snap;
@@ -43,9 +42,9 @@ function draw(segments) {
         if (parent != -1) 
             parent_outlet = outlets[parent];
 
-        draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], segments[i][4], outlets);
+        draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], segments[i][4], outlets, i);
 
-        y0 = y0 + box_height + 50;
+        y0 = y0 + box_height + 40;
 
         widths.push(Math.ceil(width / x_range));
         heights.push(Math.ceil(height / y_range));
@@ -53,7 +52,7 @@ function draw(segments) {
 
 
 }
-function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label, funcname, outlets) {
+function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label, funcname, outlets, segnum) {
     x_offset = x_offset - width;
 
     let x0 = x_offset;
@@ -96,10 +95,11 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
             if (x == 0 && y == Math.ceil(y_range-1)) {
                 fill_color = globalcolortable[funcname];
                 stroke_color = globalcolortable[funcname];
-
+                snap.text( _x0- _dx, _y1+15, ""+next_data_width+"x"+next_data_height).attr(
+                    {fontSize: fontsmall, fill: globalcolortable[funcname], fontWeight: "bold"});
                 outlets.push([_x0 -_dx -30, _y1+10]);
 
-                snap.text( _x0- _dx, _y1+22, ""+next_data_width+"x"+next_data_height).attr(
+                snap.text( _x0-_dx-20, _y1+15, "#" + segnum).attr(
                     {fontSize: fontsmall, fill: globalcolortable[funcname], fontWeight: "bold"});
             }
             draw_subbox(snap, _x0, _x1, _y0, _y1, _dx, fill_color, stroke_color);
