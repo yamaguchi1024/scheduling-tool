@@ -267,6 +267,8 @@ function execTest() {
                     let index = idx;
                     let newline = "";
                     let func;
+                    let vectorized = false;
+                    let parallel = false;
 
                     const button = document.createElement("button");
                     const hontai = document.createElement("div");
@@ -291,18 +293,21 @@ function execTest() {
                                 segments[idx] = [parentSeg[idx], range, -1, ""];
                             if (xory == "y")
                                 segments[idx][2] = range;
+                            if (vectorized)
+                                segments[idx][3] = "vectorized";
+                            if (parallel)
+                                segments[idx][3] = "parallel";
                         }
+                        // vectorized?
+                        if (curline.match(/(vectorized)/) != null)
+                            vectorized = true;
+                        if (curline.match(/(parallel)/) != null)
+                            parallel = true;
 
                         let fname = curline.match(/[?].*[?]/);
                         if (fname != null) {
                             curline = curline.replace(fname,'');
                             func = fname[0].slice(1,-1);
-                        }
-
-                        // tilable?
-                        if (curline.match(/(tileable)/) != null) {
-                            if (func == curfunc && phase == 1)
-                                buttonbackgroundchange = false;
                         }
 
                         // parse line and identify this block

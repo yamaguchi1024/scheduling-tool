@@ -3,7 +3,7 @@ window.onload = function () {
 }
 
 const fontsmall = "12px";
-const fontbig = "15px";
+const fontbig = "14px";
 let image_width = 2560;
 let image_height = 1600;
 let segment_height = 25;
@@ -116,11 +116,11 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
     };
 
     let d = 1;
-    snap.text( (x0 + x1)/2-dx/2-60+d, (y0+y1)/2+10+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
-    snap.text( (x0 + x1)/2-dx/2-60-d, (y0+y1)/2+10+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
-    snap.text( (x0 + x1)/2-dx/2-60-d, (y0+y1)/2+10-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
-    snap.text( (x0 + x1)/2-dx/2-60+d, (y0+y1)/2+10-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
-    snap.text( (x0 + x1)/2-dx/2-60, (y0+y1)/2+10, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#000000",});
+    snap.text( (x0 + x1)/2-dx/2-35+d, (y0+y1)/2+5+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
+    snap.text( (x0 + x1)/2-dx/2-35-d, (y0+y1)/2+5+d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
+    snap.text( (x0 + x1)/2-dx/2-35-d, (y0+y1)/2+5-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
+    snap.text( (x0 + x1)/2-dx/2-35+d, (y0+y1)/2+5-d, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#FFFFFF",});
+    snap.text( (x0 + x1)/2-dx/2-35, (y0+y1)/2+5, label).attr({fontWeight:"bold",fontSize:fontbig,fill:"#000000",});
 
     //snap.text( (x0 + x1)/2-dx/2-40, (y0+y1)/2+10, "parallel").attr({fontSize:"30px"});
     /*
