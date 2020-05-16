@@ -261,7 +261,7 @@ function execTest() {
                 latestSeg[0] = 0;
                 const parentSeg = {};
                 const segments = new Array(lines.length);
-                segments[0] = [-1, 1, 1, "source"];
+                segments[0] = [-1, 1, 1, "source", "top"];
                 e.innerHTML = "";
                 for (const idx in lines) {
                     let index = idx;
@@ -290,7 +290,7 @@ function execTest() {
                             latestSeg[nestcount] = parseInt(idx);
                             parentSeg[idx] = latestSeg[nestcount - 1];
                             if (xory == "x")
-                                segments[idx] = [parentSeg[idx], range, -1, ""];
+                                segments[idx] = [parentSeg[idx], range, -1, "", fname];
                             if (xory == "y")
                                 segments[idx][2] = range;
                             if (vectorized)

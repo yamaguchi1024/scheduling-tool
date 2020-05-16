@@ -43,7 +43,7 @@ function draw(segments) {
         if (parent != -1) 
             parent_outlet = outlets[parent];
 
-        draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], outlets);
+        draw_segment(snap, segment_x, y0, box_width, box_height, x_range, y_range, width, height, parent_outlet, segments[i][3], segments[i][4], outlets);
 
         y0 = y0 + box_height + 50;
 
@@ -53,7 +53,7 @@ function draw(segments) {
 
 
 }
-function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label, outlets) {
+function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range, data_width, data_height, parent_outlet, label, funcname, outlets) {
     x_offset = x_offset - width;
 
     let x0 = x_offset;
@@ -65,9 +65,9 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
     document.getElementById("svg").setAttribute("height", Math.max(parseInt(document.getElementById("svg").getAttribute("height")), y1 + 50));
     draw_subbox(snap, x0, x1, y0, y1, dx, "#FFFFFF", "#000000");
     if (parent_outlet != null) {
-        console.log(parent_outlet);
-        snap.line(parent_outlet[0], parent_outlet[1], parent_outlet[0], (y0 + y1) / 2).attr({ fill: "none", stroke: "#FF0000" });
-        draw_arrow(parent_outlet[0], (y0 + y1) / 2, x0 - dx/2-30, (y0 + y1) / 2);
+        const color = "#FF0000"; //globalcolortable[funcname];
+        snap.line(parent_outlet[0], parent_outlet[1], parent_outlet[0], (y0 + y1) / 2).attr({ fill: "none", stroke: color });
+        draw_arrow(parent_outlet[0], (y0 + y1) / 2, x0 - dx/2-30, (y0 + y1) / 2, color);
     }
 
     let next_data_width =  Math.ceil(data_width / x_range);
@@ -94,13 +94,13 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
             let fill_color = "#FFFFFF"
             let stroke_color = "#000000"
             if (x == 0 && y == Math.ceil(y_range-1)) {
-                fill_color = "#FF8888";
-                stroke_color = "#FF0000";
+                fill_color = globalcolortable[funcname];
+                stroke_color = globalcolortable[funcname];
 
                 outlets.push([_x0 -_dx -30, _y1+10]);
 
                 snap.text( _x0- _dx, _y1+22, ""+next_data_width+"x"+next_data_height).attr(
-                    {fontSize: fontsmall});
+                    {fontSize: fontsmall, fill: globalcolortable[funcname]});
             }
             draw_subbox(snap, _x0, _x1, _y0, _y1, _dx, fill_color, stroke_color);
         }
@@ -117,10 +117,9 @@ function draw_subbox(snap, x0, x1, y0, y1, dx, fill_color, stroke_color) {
     let points = [x0, y0, x1, y0, x1 - dx, y1, x0 - dx, y1];
     snap.polygon(points).attr({ fill: fill_color, stroke: stroke_color});
 }
-function draw_arrow(x0, y0, x1, y1) {
-    snap.line(x0, y0, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
-
+function draw_arrow(x0, y0, x1, y1, color) {
     let r = 10;
-    snap.line(x1-r, y1-r, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
-    snap.line(x1-r, y1+r, x1, y1).attr({ fill: "none", stroke: "#FF0000" });
+    snap.line(x0, y0, x1, y1).attr({ fill: "none", stroke: color });
+    snap.line(x1-r, y1-r, x1, y1).attr({ fill: "none", stroke: color });
+    snap.line(x1-r, y1+r, x1, y1).attr({ fill: "none", stroke: color });
 }
