@@ -100,7 +100,7 @@ function draw_segment(snap, x_offset, y_offset, width, height, x_range, y_range,
                 outlets.push([_x0 -_dx -30, _y1+10]);
 
                 snap.text( _x0- _dx, _y1+22, ""+next_data_width+"x"+next_data_height).attr(
-                    {fontSize: fontsmall, fill: globalcolortable[funcname]});
+                    {fontSize: fontsmall, fill: globalcolortable[funcname], fontWeight: "bold"});
             }
             draw_subbox(snap, _x0, _x1, _y0, _y1, _dx, fill_color, stroke_color);
         }
