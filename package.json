@@ -6,7 +6,7 @@
   "dependencies": {
     "d3-graphviz": "^2.6.1",
     "electron": "^5.0.6",
-    "highlight.js": "^9.15.9",
+    "highlight.js": "^10.1.2",
     "jquery": "^3.4.1",
     "path": "^0.12.7",
     "vis": "^4.21.0-EOL",
