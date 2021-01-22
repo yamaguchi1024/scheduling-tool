@@ -43,7 +43,7 @@ app.on('ready', function() {
             + "-Wno-unused-function -Wcast-qual -Wignored-qualifiers -Wno-comment -Wsign-compare "
             + "-Wno-unknown-warning-option -Wno-psabi -rdynamic " + filename
             + " /home/yuka/Halide/apps/scheduling-tool/bin/libscheduling_tool.so -o "
-            + " ./bin/" + path.parse(filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/bin/libHalide.so "
+            + " ./bin/" + path.parse(filename).name + " -ldl -lpthread -lz /home/yuka/Halide/distrib/lib/libHalide.so "
             + "-lz -lrt -ldl -ltinfo -lpthread -lm -lxml2 `libpng-config --cflags --ldflags` -ljpeg"
 
         const compile = exec(command,
