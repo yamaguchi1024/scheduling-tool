@@ -130,14 +130,14 @@ function execTest() {
 
                     const cdiv = document.createElement("div");
                     cdiv.setAttribute("style", "text-align: right; float: right; height: 25px; margin-right: 6px;");
-                    cdiv.innerHTML =  '<span style="color: black; font-family: monospace;">Cost: </span>' + costarray[i];
+                    cdiv.innerHTML =  '<span style="color: black; font-size: 14px;">Cost: </span>' + costarray[i];
 
                     const c = document.createElement("div");
                     c.setAttribute("id", "popup_phase1");
-                    c.setAttribute("style", "margin-left: -140px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid black; color: black");
-                    c.innerHTML +=  "load cost: " + loadcostarray[i];
-                    c.innerHTML +=  "<br> store cost: " + storecostarray[i];
-                    c.innerHTML +=  "<br> compute cost: " + computecostarray[i];
+                    c.setAttribute("style", "margin-left: -80px; display: none; background-color: #DDDDDD; text-align: left; width: 140px; position: absolute; z-index: 1; border: 1px solid black; color: black; font-size: 12px; padding-left: 3px;");
+                    c.innerHTML +=  "Load cost: " + loadcostarray[i];
+                    c.innerHTML +=  "<br> Store cost: " + storecostarray[i];
+                    c.innerHTML +=  "<br> Compute cost: " + computecostarray[i];
 
                     cdiv.onmouseover = function() {
                         cdiv.children[1].style.display = 'block';
