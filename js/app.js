@@ -102,7 +102,7 @@ function execTest() {
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
-                inst.setAttribute("style", "font-size: 14px; text-decoration: underline;");
+                inst.setAttribute("style", "font-size: 14px; text-decoration: underline; margin-left: 5px; margin-bottom: 3px;");
 
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
@@ -271,9 +271,9 @@ function execTest() {
                     document.getElementById('popup').style.display = 'none';
                 };
                 span.innerText = json.contents;
-                span.setAttribute("style", "color: #FF6666;");
+                //span.setAttribute("style", "color: #FF6666;");
 
-                e.setAttribute("style", "font-size: 14px; margin-right: 6px; margin-left: auto;");
+                e.setAttribute("style", "font-size: 14px; margin-left: 5px;");
                 e.appendChild(document.createTextNode('Overall Cost: '));
                 e.appendChild(span);
                 e.appendChild(document.createTextNode(' '));
@@ -284,14 +284,19 @@ function execTest() {
 
                 const c = document.createElement("div");
                 c.setAttribute("id", "popup");
-                c.setAttribute("style", "bottom: 60; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
-                c.innerHTML += "load cost: " + load_cost;
-                c.innerHTML += "<br>store cost: " + store_cost;
-                c.innerHTML += "<br>compute cost: " + compute_cost;
+                c.setAttribute("style", "font-size: 12px;");
+                //c.setAttribute("style", "bottom: 60; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
+                c.innerHTML += "Load cost: " + load_cost;
+                c.innerHTML += "<br>Store cost: " + store_cost;
+                c.innerHTML += "<br>Compute cost: " + compute_cost;
 
                 e.appendChild(c);
 
-                const undobutton = document.createElement("button");
+                const u = document.getElementById("undo");
+                u.innerHTML = "";
+                u.setAttribute("style", "margin-left: auto; margin-right: 2px;");
+
+                const undobutton = document.createElement("input");
                 undobutton.onclick = function() {
                     globalexec.stdin.write("-1 -1\n");
                 };
@@ -301,11 +306,11 @@ function execTest() {
                 undobutton.onmouseout = function() {
                     undobutton.style.backgroundColor = "#FFFFFF";
                 };
-                undobutton.setAttribute("style", "text-align: left; margin-left: 5px");
-                undobutton.innerHTML = "undo";
-                undobutton.style.backgroundColor = "#FFFFFF";
+                undobutton.setAttribute("src", "images/undo.png");
+                undobutton.setAttribute("type", "image");
+                undobutton.setAttribute("style", "width: 20px; height: 20px;");
 
-                const redobutton = document.createElement("button");
+                const redobutton = document.createElement("input");
                 redobutton.onclick = function() {
                     globalexec.stdin.write("-2 -2\n");
                 };
@@ -315,12 +320,12 @@ function execTest() {
                 redobutton.onmouseout = function() {
                     redobutton.style.backgroundColor = "#FFFFFF";
                 };
-                redobutton.setAttribute("style", "text-align: left;");
-                redobutton.innerHTML = "redo";
-                redobutton.style.backgroundColor = "#FFFFFF";
+                redobutton.setAttribute("src", "images/redo.png");
+                redobutton.setAttribute("type", "image");
+                redobutton.setAttribute("style", "width: 20px; height: 20px; margin-left: 2px;");
 
-                e.appendChild(undobutton);
-                e.appendChild(redobutton);
+                u.appendChild(undobutton);
+                u.appendChild(redobutton);
             }
         }
 
