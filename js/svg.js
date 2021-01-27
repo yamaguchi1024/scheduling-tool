@@ -17,6 +17,10 @@ function draw(segments) {
     let y0 = 20;
     let outlets = [];
 
+    // Initialize some text
+    snap.text(600, 40, "Schedule: ").attr({fontSize: fontbig, fontWeight: "bold"});
+    snap.text(860, 40, "Compute Location: ").attr({fontSize: fontbig, fontWeight: "bold"});
+
     for (let i = 0; i < segments.length; i++){
 
         let parent = segments[i][0];
@@ -147,8 +151,9 @@ function draw_button_cost(linenum, line_cost, load_cost, store_cost, compute_cos
     // Draw scheduling button
     const x = 860;
     const y = y_loc[linenum];
-    let button = snap.polygon(x, y, x+10, y+10, x+10, y+3, x+20, y+3, x+20, y-3, x+10, y-3, x+10, y-10);
-    button     = button.attr({ text: linenum, id : "button", fill: "red"});
+    let button = snap.polygon(x, y, x+13, y+13, x+13, y+6, x+23, y+6, x+23, y-6, x+13, y-6, x+13, y-13);
+    const shadow = snap.filter(Snap.filter.shadow(0, 1, 1, "#A9A9A9", 0.8));
+    button     = button.attr({ text: linenum, id : "button", fill: "red", filter: shadow, stroke: "#A9A9A9"});
 
     button.mouseover( function(e) {
             e.target.setAttribute("fill", "#FFEF00");
@@ -164,7 +169,7 @@ function draw_button_cost(linenum, line_cost, load_cost, store_cost, compute_cos
     });
 
     // Draw cost
-    snap.text(x+30, y + 4, "Cost: " + line_cost).attr({fontSize: fontbig});
+    snap.text(x+33, y + 4, "Cost: " + line_cost).attr({fontSize: fontbig});
     snap.text(x+100, y + 2, "Load cost: " + load_cost).attr({fontSize: fontsmall});
     snap.text(x+100, y + 16, "Store cost: " + store_cost).attr({fontSize: fontsmall});
     snap.text(x+100, y + 30, "Compute cost: " + compute_cost).attr({fontSize: fontsmall});

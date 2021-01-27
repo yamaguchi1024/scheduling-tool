@@ -102,7 +102,7 @@ function execTest() {
                 document.getElementById('tile').classList.remove('inactive');
                 const inst = document.getElementById("instruction");
                 inst.innerHTML = json.instruction;
-                inst.setAttribute("style", "font-family: monospace; text-decoration: underline;");
+                inst.setAttribute("style", "font-size: 14px; text-decoration: underline;");
 
                 const suggest = document.getElementById("suggestion");
                 suggest.innerHTML = "";
@@ -273,8 +273,8 @@ function execTest() {
                 span.innerText = json.contents;
                 span.setAttribute("style", "color: #FF6666;");
 
-                e.setAttribute("style", "font-family: monospace;");
-                e.appendChild(document.createTextNode('Current Cost: '));
+                e.setAttribute("style", "font-size: 14px; margin-right: 6px; margin-left: auto;");
+                e.appendChild(document.createTextNode('Overall Cost: '));
                 e.appendChild(span);
                 e.appendChild(document.createTextNode(' '));
 
@@ -284,7 +284,7 @@ function execTest() {
 
                 const c = document.createElement("div");
                 c.setAttribute("id", "popup");
-                c.setAttribute("style", "bottom: 28px; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
+                c.setAttribute("style", "bottom: 60; display: none; background-color: #DDDDDD; text-align: left; width: 200px; position: absolute; z-index: 1; border: 1px solid;");
                 c.innerHTML += "load cost: " + load_cost;
                 c.innerHTML += "<br>store cost: " + store_cost;
                 c.innerHTML += "<br>compute cost: " + compute_cost;
@@ -301,7 +301,7 @@ function execTest() {
                 undobutton.onmouseout = function() {
                     undobutton.style.backgroundColor = "#FFFFFF";
                 };
-                undobutton.setAttribute("style", "text-align: left");
+                undobutton.setAttribute("style", "text-align: left; margin-left: 5px");
                 undobutton.innerHTML = "undo";
                 undobutton.style.backgroundColor = "#FFFFFF";
 
@@ -315,7 +315,7 @@ function execTest() {
                 redobutton.onmouseout = function() {
                     redobutton.style.backgroundColor = "#FFFFFF";
                 };
-                redobutton.setAttribute("style", "text-align: left");
+                redobutton.setAttribute("style", "text-align: left;");
                 redobutton.innerHTML = "redo";
                 redobutton.style.backgroundColor = "#FFFFFF";
 
