@@ -2,7 +2,7 @@ const fontsmall = "12px";
 const fontbig = "14px";
 let image_width = 2560;
 let image_height = 1600;
-let segment_x = 510; // 1150
+let segment_x = 470; // 1150
 
 let snap;
 let y_loc = [];
@@ -18,7 +18,7 @@ function draw(segments) {
     let outlets = [];
 
     // Initialize some text
-    snap.text(600, 40, "Schedule: ").attr({fontSize: fontbig, fontWeight: "bold"});
+    snap.text(560, 40, "Schedule: ").attr({fontSize: fontbig, fontWeight: "bold"});
     snap.text(860, 40, "Compute Location: ").attr({fontSize: fontbig, fontWeight: "bold"});
 
     for (let i = 0; i < segments.length; i++){
@@ -129,7 +129,7 @@ function draw_segment(snap, x_offset, y_offset, width, height,
     snap.line(line_x, line_y, 850, line_y).attr({ fill: "none", stroke: "black", 'stroke-dasharray': "8"});
 
     const sched_y = line_y - 32;
-    const sched_x = 600;
+    const sched_x = 560;
     // Draw schedule text
     for (const idx in schedule_line) {
         let line = schedule_line[idx];
