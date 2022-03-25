@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "d3-graphviz": "^2.6.1",
-    "electron": "^5.0.6",
+    "electron": "^13.6.6",
     "highlight.js": "^9.15.9",
     "jquery": "^3.4.1",
     "path": "^0.12.7",
